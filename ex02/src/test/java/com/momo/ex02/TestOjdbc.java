@@ -1,4 +1,4 @@
-package com.momo.ex;
+package com.momo.ex02;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -10,9 +10,10 @@ import java.sql.SQLException;
 
 import org.junit.Test;
 
+
+
 public class TestOjdbc {
 	
-	// test 어노테이션 붙인 메서드만 테스트 된다
 	@Test
 	public void calcTest() {
 		Calc calc = new Calc();
@@ -21,7 +22,6 @@ public class TestOjdbc {
 		// res 와 3이 같은 수인지 확인하는 메서드
 		assertEquals(3, res);
 	}
-
 	
 	@Test
 	public void ojdbcTest() {
@@ -33,6 +33,7 @@ public class TestOjdbc {
 			ResultSet rs = conn.createStatement().executeQuery("select to_char(sysdate, 'yyyy/mm/dd') || '입니다' from dual");
 			
 			rs.next();
+			
 			System.out.println(rs.getString(1));
 			System.out.println(conn);
 			
@@ -48,4 +49,5 @@ public class TestOjdbc {
 		}
 		
 	}
+	
 }

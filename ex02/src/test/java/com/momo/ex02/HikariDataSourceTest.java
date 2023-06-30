@@ -1,4 +1,4 @@
-package com.momo.ex;
+package com.momo.ex02;
 
 import static org.junit.Assert.assertNotNull;
 

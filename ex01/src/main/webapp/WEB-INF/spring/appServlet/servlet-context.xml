@@ -21,7 +21,8 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.momo.ex" />
+	<!-- 패키지에 있는 컨트롤러 실행 .ex 삭제-->
+	<context:component-scan base-package="com.momo" />
 	
 	
 	

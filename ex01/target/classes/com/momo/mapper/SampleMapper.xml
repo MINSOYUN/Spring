@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 경로와 인터페이스 이름 -->
+<mapper namespace="com.momo.mapper.SampleMapper">
+
+<!-- id: 연결되어있는 메서드 이름 -->
+<select id="getTime2" resultType="string">
+	select sysdate||'[xml파일연동]' from dual
+</select>
+
+</mapper>

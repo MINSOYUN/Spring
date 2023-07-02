@@ -33,6 +33,4 @@ public class MybatisTest {
 		assertNotNull(time);
 	}
 	
-	
-	
 }

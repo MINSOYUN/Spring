@@ -183,7 +183,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 			<version>${org.springframework-version}</version>
-		</dependency>
+		</dependency> 
 		
 		
 		<!-- 쿼리 실행결과 출력 log4jdbc-log4j2 https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1 -->

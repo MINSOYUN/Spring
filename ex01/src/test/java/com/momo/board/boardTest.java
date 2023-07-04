@@ -97,7 +97,6 @@ public class boardTest {
 	@Test
 	public void update() {
 		BoardVO board = boardMapper.getOne(6);
-		board.setTitle(title);
 		
 	}
 }

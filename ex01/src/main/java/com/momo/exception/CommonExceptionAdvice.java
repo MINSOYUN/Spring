@@ -12,7 +12,8 @@ import lombok.extern.log4j.Log4j;
 /**
  * root-context에 component-scan을 패키지에 적용해야 빈으로 등록!
  * 
- * ControllerAdvice 컨트롤러에 대한 예외를 처리하는 객체임을 명시 컨트롤러가 실행 중 발생되는 오류이므로 500번 오류가 발생
+ * ControllerAdvice 컨트롤러에 대한 예외를 처리하는 객체임을 명시
+ * 컨트롤러가 실행 중 발생되는 오류이므로 500번 오류가 발생
  * 하는 경우 실행
  * 
  * ExceptionHandler Controller, RestController가 적용된 Bean 내에서 발생하는 예외를 하나의 메서드에서
@@ -41,9 +42,9 @@ public class CommonExceptionAdvice {
 	
 	
 	// 400에 대한 에러
-	@ExceptionHandler(NoHandlerFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public String handle404(NoHandlerFoundException ex) {
-		return "/error/error400";
-	}
+//	@ExceptionHandler(NoHandlerFoundException.class)
+//	@ResponseStatus(HttpStatus.NOT_FOUND)
+//	public String handle404(NoHandlerFoundException ex) {
+//		return "/error/error400";
+//	}
 }

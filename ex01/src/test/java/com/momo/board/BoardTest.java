@@ -19,13 +19,12 @@ import lombok.extern.log4j.Log4j;
 @Log4j   // log.info 사용 가능
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
-public class boardTest {
+public class BoardTest {
 	@Autowired
 	BoardMapper boardMapper;
 	
 	@Test
 	public void getList() {
-		// boardMapper 이 not null 인지
 		assumeNotNull(boardMapper);
 		List<BoardVO> list = boardMapper.getList();
 		
@@ -96,7 +95,16 @@ public class boardTest {
 	
 	@Test
 	public void update() {
-		BoardVO board = boardMapper.getOne(6);
-		
+		BoardVO board = boardMapper.getOne(7);
+		board.setTitle("수정/제목");
+		int res = boardMapper.update(board);
+		log.info("board: " + board);
+	}
+	
+	
+	@Test
+	public void getTotalCnt() {
+		int res = boardMapper.getTotalCnt();
+		log.info("totalCnt: " + res);
 	}
 }

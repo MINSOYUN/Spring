@@ -21,6 +21,7 @@ public class MemberService {
 	
 		if(member == null) {
 			model.addAttribute("message", "아이디/ 비밀번호를 확인해주세요");
+			
 		} else {
 			model.addAttribute("message", member.getName()+"님 환영합니다");
 		}

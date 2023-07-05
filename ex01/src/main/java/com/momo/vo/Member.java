@@ -28,6 +28,7 @@ import lombok.Data;
 		private String pw;
 		private String name;
 		private int age;
+		private String adminyn;
 		
 		@DateTimeFormat(pattern="yyyy/MM/dd")
 		private Date dueDate;

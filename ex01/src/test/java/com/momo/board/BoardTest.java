@@ -97,6 +97,8 @@ public class BoardTest {
 	public void update() {
 		BoardVO board = boardMapper.getOne(7);
 		board.setTitle("수정/제목");
+		board.setContent("수정/내역");
+		board.setWriter("수정/작성자");
 		int res = boardMapper.update(board);
 		log.info("board: " + board);
 	}

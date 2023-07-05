@@ -42,8 +42,8 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public int insertSelectkey(BoardVO board) {
-		boardMapper.insertSelectkey(board);
-		return 0;
+		int res = boardMapper.insertSelectkey(board);
+		return res;
 	}
 
 	@Override

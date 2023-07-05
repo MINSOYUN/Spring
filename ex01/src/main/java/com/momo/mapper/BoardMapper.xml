@@ -20,7 +20,7 @@
 	<!-- 패키지명을 포함한 풀 경로 -->
 	<select id="getListXml" resultType="com.momo.vo.BoardVO">
 		<![CDATA[ 
-		select * from tbl_board
+		select * from tbl_board order by bno desc
 		 ]]>
 	</select>
 	
@@ -42,7 +42,7 @@
 	<!-- vo에 저장하기 때문에 vo 값과 일치해야한다 / before : 쿼리 실행하기 전에 실행 -->
 	<!-- insert 실행 전에 select 조회해서 저장 -->
 		<selectKey keyProperty="bno" order="BEFORE" resultType="int">
-			select seq_board.nextval form dual
+			select seq_board.nextval from dual
 		</selectKey>
 	
 		insert into tbl_board (bno, title, content, writer) 
@@ -61,7 +61,7 @@
 	
 	
 	<update id="update" >
-		update tbl_board set title = #{title} where bno = #{bno}
+		update tbl_board set title = #{title}, content = #{content}, writer = #{writer} where bno = #{bno}
 	</update>
 	
 	<select id="getTotalCnt" resultType="int">

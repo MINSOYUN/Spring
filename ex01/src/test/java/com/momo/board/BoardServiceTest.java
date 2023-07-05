@@ -45,7 +45,9 @@ public class BoardServiceTest {
 	
 	@Test
 	public void delete() {
-		int res = boardService.delete(5);
+		int res = boardService.delete(47);
+		log.info("boardVO=======");
+		log.info("res : " + res);
 		assertEquals(res, 1);
 	}
 	
@@ -57,6 +59,8 @@ public class BoardServiceTest {
 		board.setContent("뉴컨텐츠");
 		board.setWriter("뉴작가");
 		int res = boardService.insert(board);
+		
+		log.info("boardVO=======");
 		log.info("board: "+ board);
 		log.info("res: "+ res);
 		assertEquals(res, 1);
@@ -65,9 +69,12 @@ public class BoardServiceTest {
 	
 	@Test
 	public void update() {
-		BoardVO board = boardService.getOne(4);
+		BoardVO board = boardService.getOne(46);
 		board.setTitle("update제목!");
+		board.setContent("update내용");
+		board.setWriter("update작성자");
 		int res = boardService.update(board);
+		
 		log.info("==========");
 		log.info("board: "+ board);
 		log.info("res: "+ res);

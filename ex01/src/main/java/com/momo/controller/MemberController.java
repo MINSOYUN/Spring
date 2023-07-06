@@ -45,7 +45,12 @@ public class MemberController {
 		// req.setAttribute랑 같음
 		// model.addAttribute("message", member.getId() + "님 환영합니다");
 		
-		return "redirect:/board/list";
+		return "redirect:/board/listPage";
+		
+	}
+	
+	@GetMapping("mypage")
+	public void mypage() {
 		
 	}
 }

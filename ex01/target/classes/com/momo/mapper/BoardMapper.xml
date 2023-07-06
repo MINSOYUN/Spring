@@ -19,9 +19,13 @@
 	
 	<!-- 패키지명을 포함한 풀 경로 -->
 	<select id="getListXml" resultType="com.momo.vo.BoardVO">
-		<![CDATA[ 
-		select * from tbl_board order by bno desc
-		 ]]>
+		<![CDATA[ select * from (
+		select t.*, rownum rn from (
+			select * from tbl_board where bno>0 
+		]]>
+				<include refid="criteria"/> order by bno desc
+				) t )
+				 where rn between #{startNo} and #{endNo}
 	</select>
 	
 	
@@ -56,7 +60,7 @@
 	
 	
 	<delete id="delete">
-		delete from tbl_board where bno = #{bno}
+		delete from tbl_board where bno in (${bno})
 	</delete>
 	
 	
@@ -64,8 +68,31 @@
 		update tbl_board set title = #{title}, content = #{content}, writer = #{writer} where bno = #{bno}
 	</update>
 	
+	
 	<select id="getTotalCnt" resultType="int">
-		select count(*) from tbl_board
+		select count(*) from tbl_board where 1=1
+		<include refid="criteria"/>
 	</select>
+	
+	<!-- 
+		반복되는 쿼리를 미리 작성해 놓고 재활용 !
+		반복할 쿼리 선언 : <sql id="">
+		선언한 쿼리 사용: <include refid="">
+		변수 사용 방법: <property name="">
+		refid = reference id -> sql id
+	 -->
+	<sql id="criteria">
+		<choose>
+			<when test="searchField == 'title'">
+				and title like '%'||#{searchWord}||'%'
+			</when>
+			<when test="searchField == 'content'">
+				and content like '%'||#{searchWord}||'%'
+			</when>
+			<when test="searchField == 'writer'">
+				and writer like '%'||#{searchWord}||'%'
+			</when>
+		</choose>
+	</sql>
 	
 </mapper>

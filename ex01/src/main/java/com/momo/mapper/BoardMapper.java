@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Select;
 
 import com.momo.vo.BoardVO;
+import com.momo.vo.Criteria;
 
 public interface BoardMapper {
 	
@@ -13,7 +14,7 @@ public interface BoardMapper {
 	public List<BoardVO> getList();
 	
 	// 조회
-	public List<BoardVO> getListXml();
+	public List<BoardVO> getListXml(Criteria cri);
 	
 	// 작성
 	public int insert(BoardVO board);
@@ -25,11 +26,12 @@ public interface BoardMapper {
 	public BoardVO getOne(int bno);
 	
 	// 삭제
-	public int delete(int bno);
+	public int delete(String bno);
 	
 	// 업데이트
 	public int update(BoardVO board);
 	
 	// 총 건수
-	public int getTotalCnt();
+	public int getTotalCnt(Criteria cri);
+	
 }

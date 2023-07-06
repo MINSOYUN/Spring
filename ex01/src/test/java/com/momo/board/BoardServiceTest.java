@@ -10,9 +10,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.ui.Model;
 
 import com.momo.service.BoardService;
 import com.momo.vo.BoardVO;
+import com.momo.vo.Criteria;
 
 import jdk.internal.org.jline.utils.Log;
 import lombok.extern.log4j.Log4j;
@@ -25,8 +27,8 @@ public class BoardServiceTest {
 	BoardService boardService;
 	
 	@Test
-	public void getListXml() {
-		List<BoardVO> list = boardService.getListXml();
+	public void getListXml(Criteria cri, Model model) {
+		List<BoardVO> list = boardService.getListXml(cri, model);
 		
 		list.forEach(board ->{
 			log.info(board);
@@ -45,7 +47,7 @@ public class BoardServiceTest {
 	
 	@Test
 	public void delete() {
-		int res = boardService.delete(47);
+		int res = boardService.delete(Integer.toString(44));
 		log.info("boardVO=======");
 		log.info("res : " + res);
 		assertEquals(res, 1);
@@ -79,13 +81,5 @@ public class BoardServiceTest {
 		log.info("board: "+ board);
 		log.info("res: "+ res);
 		assertEquals(res, 1);
-	}
-	
-	
-	@Test
-	public void getTotalCnt() {
-		int res = boardService.getTotalCnt();
-		log.info("=================");
-		log.info("res: "+ res);
 	}
 }

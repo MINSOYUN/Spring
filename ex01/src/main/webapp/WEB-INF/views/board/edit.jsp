@@ -15,6 +15,15 @@
         padding-left: 10px;
 	}
 </style>
+
+<script type="text/javascript">
+	function requestAction(url){
+		writeFrm.action = url;
+		writeFrm.submit();
+		
+	}
+</script>
+
 </head>
 
 
@@ -31,9 +40,8 @@
   </div>
 <p></p> <p></p>
 	<div class="list-group w-auto">
-		<form name="writeFrm" method="post" action="/board/update">
+		<form name="writeFrm" method="post" action="/board/editAction">
 			게시글번호 : <input type="text" name="bno" value="${board.bno }" readonly>
-			<c:forEach items="${board}" var="vo" step="1">
 		  		<div class="mb-3">
 					  <label for="title" class="form-label">board title<span class="required-label">*</span></label>
 					  <input name="title" id="title" type="text" class="form-control" value="${board.title }">
@@ -46,9 +54,8 @@
 					  <label for="writer" class="form-label">board title<span class="required-label">*</span></label>
 					  <input type="text" id="writer" class="form-control" name="writer" value="${board.writer }">
 					</div>
-			</c:forEach>			
 				<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-						<button type="submit" class="btn btn-primary btn-sm" onclick="requestAction('/board/edit')">수정하기</button>
+						<button type="submit" class="btn btn-primary btn-sm" onclick="requestAction('/board/editAction')">수정하기</button>
 						<button type="button" class="btn btn-secondary btn-sm" onclick="requestAction('/board/delete')">삭제하기</button>
 						<button type="reset" class="btn btn-secondary btn-sm">작성 취소</button>
 				</div>	

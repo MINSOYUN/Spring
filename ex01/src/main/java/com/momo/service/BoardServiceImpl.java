@@ -4,9 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.momo.mapper.BoardMapper;
 import com.momo.vo.BoardVO;
+import com.momo.vo.Criteria;
+import com.momo.vo.PageDto;
+
+import lombok.extern.log4j.Log4j;
 
 	/**
 	 * 각 계층간의 연결은 인터페이스를 활용하여 느슨한 결합을 한다
@@ -24,14 +29,28 @@ import com.momo.vo.BoardVO;
 	 *3. 테스트 용이성
 	 *단위 테스트 시 테스트용 구현체를 이용함으로써 테스트를 수행
 	 */
+@Log4j
 @Service
 public class BoardServiceImpl implements BoardService{
 	@Autowired
 	private BoardMapper boardMapper;
 	
+	
 	@Override
-	public List<BoardVO> getListXml() {
-		return boardMapper.getListXml();
+	public List<BoardVO> getListXml(Criteria cri, Model model) {
+		List<BoardVO> list = boardMapper.getListXml(cri);
+		int totalCnt = boardMapper.getTotalCnt(cri);
+		PageDto pageDto = new PageDto(totalCnt, cri);
+		
+		log.info("============");
+		log.info("list : " + list);
+		log.info("cri : " + cri);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("totalCnt", totalCnt);
+		model.addAttribute("pageDto", pageDto);
+		//return boardMapper.getListXml(cri);
+		return null;
 	}
 
 	@Override
@@ -53,8 +72,9 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int delete(int bno) {
+	public int delete(String bno) {
 		int res = boardMapper.delete(bno);
+		System.out.println("서비스res: " + res);
 		return res;
 	}
 
@@ -65,8 +85,8 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int getTotalCnt() {
-		int totalCnt = boardMapper.getTotalCnt();
+	public int getTotalCnt(Criteria cri) {
+		int totalCnt = boardMapper.getTotalCnt(cri);
 		return totalCnt;
 	}
 

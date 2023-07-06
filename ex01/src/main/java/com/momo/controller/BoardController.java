@@ -14,6 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.momo.service.BoardService;
 import com.momo.vo.BoardVO;
+import com.momo.vo.Criteria;
+import com.momo.vo.PageDto;
 
 import lombok.extern.log4j.Log4j;
 
@@ -45,14 +47,18 @@ public class BoardController {
 	@Autowired
 	BoardService boardService;
 	
+	
+	/**
+	 * 파라미터의 자동 수집
+	 * 기본 생성자를 이용해서 객체를 생성
+	 * -> setter 메서드를 이용해서 세팅
+	 * @param cri
+	 * @param model
+	 */
 	// 리스트 조회
 	@GetMapping("list")
-	public void getList(Model model) {
-		List<BoardVO> list = boardService.getListXml();
-		log.info("========");
-		log.info("list : " + list);
-		// model에 조회값 list를 담는다
-		model.addAttribute("list", list);
+	public void getList(Criteria cri, Model model) {
+		boardService.getListXml(cri, model);
 	}
 	
 	
@@ -117,13 +123,8 @@ public class BoardController {
 	
 	
 	// 게시글 업데이트
-	@PostMapping()
-	public String editPost(BoardVO board, Model model, RedirectAttributes rttr) {
-		board.setTitle(board.getTitle());
-		board.setContent(board.getContent());
-		board.setWriter(board.getWriter());
-		int bno = board.getBno();
-		board.setBno(bno);
+	@PostMapping("editAction")
+	public String editAction(BoardVO board, Model model, RedirectAttributes rttr) {
 		int res = boardService.update(board);
 		
 		String msg = "";
@@ -131,9 +132,11 @@ public class BoardController {
 		log.info("board : "+ board);
 		
 		if(res > 0) {
+			// redirect 시 request 영역이 공유 되지 않으므로 RedirectAttributes 를 이용합니다
+			
 			msg = board.getBno() + "번 게시글이 수정되었습니다";
 			rttr.addFlashAttribute("msg", msg);  
-			return "redirect:/board/view?bno=" + bno;
+			return "redirect:/board/view?bno=" + board.getBno();
 		} else {
 			msg = "게시믈 수정 중 예외가 발생하였습니다";
 			model.addAttribute("msg", msg);
@@ -143,13 +146,15 @@ public class BoardController {
 	
 	
 	// 게시글 삭제
-	@GetMapping
-	public String delete(BoardVO board, Model model, RedirectAttributes rttr) {
-		int res = boardService.delete(board.getBno());
+	@GetMapping("delete")
+	public String delete(Model model, RedirectAttributes rttr, String bno) {
+		System.out.println("bno:" + bno);
+		int res = boardService.delete(bno);
+		System.out.println("삭제res:" + res);
 		
 		String msg = "";
 		if(res>0) {
-			msg = board.getBno() + "번 게시글이 삭제되었습니다";
+			msg = bno + "번 게시글이 삭제되었습니다";
 			rttr.addFlashAttribute("msg", msg);  
 			return "redirect:/board/list";
 		} else {
@@ -159,9 +164,10 @@ public class BoardController {
 		}
 	}
 	
+	
 	@GetMapping("totalCnt")
-	public void getTotalCnt(Model model) {
-		int res = boardService.getTotalCnt();
+	public void getTotalCnt(Criteria cri, Model model) {
+		int res = boardService.getTotalCnt(cri);
 		model.addAttribute("totalCnt", res);
 	}
 	

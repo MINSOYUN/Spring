@@ -20,7 +20,11 @@
 		
 		<!-- 삼항 연산자 -> 버튼 활성화 / 비활성화 -->
 		<li class="page-item ${pageDto.prev ? '' : 'disabled' }">
-			<a class="page-link" onclick="go(${pageDto.startNo-1})" href="#">Previous</a>
+			<a class="page-link" 
+			<c:if test="${pageDto.prev }">
+			onclick="go(${pageDto.startNo-1})"
+			</c:if>			
+			 href="#">Previous</a>
 	    </li>
 		<c:forEach begin="${pageDto.startNo }" end="${pageDto.endNo }" var="i">
 			    <li class="page-item"><a class="page-link" onclick="go(${i})" href="#">${i }</a></li>

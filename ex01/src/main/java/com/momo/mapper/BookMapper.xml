@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.momo.mapper.BookMapper">
+	
+	
+	<select id="getList" resultType="com.momo.vo.BookVO">
+		<![CDATA[ 
+		select * from (
+			select t.*, rownum rn from (
+				select no, title, author, publisher, to_char(postdate, 'YYYY-MM-DD') postdate, decode(rentyn, 'Y', '대여중', 'N', '대여가능') rentynStr, visitcount
+				from book where 1=1
+		]]>
+				<include refid="criteria"></include>
+				order by no desc
+			) t
+		)
+		where rn between #{startNo} and #{endNo}
+	</select>
+	
+	
+	<select id="getTotalCnt" resultType="int">
+		select count(*) from book where 1=1
+		<include refid="criteria"></include>
+	</select>
+	
+	<sql id="criteria">
+	 <choose>
+	 	<when test="searchField == 'title'">
+	 		and title like '%'||#{searchWord}||'%'
+	 	</when>
+	 	<when test="searchField == 'author'">
+	 		and author like '%'||#{searchWord}||'%'
+	 	</when>
+	 </choose>
+	
+	</sql>
+	
+	
+	<select id="getOne" resultType="com.momo.vo.BookVO">
+		select * from book where no = #{no}
+	</select>
+	
+	
+	<insert id="insert">
+		<selectKey keyProperty="no" order="BEFORE" resultType="int">
+			select seq_book_no.nextval from dual
+		</selectKey>
+		insert into book(no, title, author, publisher, rentyn, visitcount, postdate) 
+		values(#{no}, #{title}, #{author}, #{publisher}, 'N', 0, sysdate)
+	</insert>
+	
+	
+	<delete id="delete">
+		delete from book where no = #{no}
+	</delete>
+	
+	<update id="update">
+		update book set title=#{title}, author=#{author}, publisher=#{publisher} where no = #{no}
+	</update>
+	
+</mapper>

@@ -43,21 +43,4 @@ public class BookServiceTest {
 		BookVO book = bookService.getOne(49, null);
 	}
 	
-	
-	@Test
-	public int insert(BookVO book) {
-		int res = bookService.insert(book);
-		log.info("====================");
-		log.info("res: " + res);
-		return res;
-	}
-	
-	
-	@Test
-	public void delete(int no) {
-		int res = bookService.delete(49);
-		log.info("====================");
-		log.info("res: " + res);
-	}
-	
 }

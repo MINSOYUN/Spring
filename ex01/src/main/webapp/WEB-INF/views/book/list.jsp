@@ -59,7 +59,7 @@
 	                        <tbody>
 	                        <c:forEach items="${list }" var="book">
 	                            <tr class="odd gradeX">
-	                                <td><input type="checkbox" name="no" value="${book.no }"></td>
+	                                <td><input type="checkbox" name="check" value="${book.no }"></td>
 	                                <td><a href="/book/view?no=${book.no }">${book.title }</a></td>
 	                                <td>${book.author }</td>
 	                                <td class="center">${book.publisher }</td>
@@ -76,9 +76,9 @@
 	          			 	<%@include file="../common/pageNavi.jsp" %>
 	          			</div>
 	          			<!-- 버튼 -->
-	          			<div style="text-align:right">
-	          				 <button id="registerButton" onclick="location.href='/book/write'">Book Register</button>
-	          				 <button id="registerButton" onclick="location.href='/book/delete'">Delete a book</button>
+	          			<div>
+	          				 <button id="registerButton">Book Register</button>
+	          				 <button id="registerButton">Delete a book</button>
 	          			</div>
 	          			<p></p>
 	          			 <!-- information -->

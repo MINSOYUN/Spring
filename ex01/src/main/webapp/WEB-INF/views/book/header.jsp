@@ -36,36 +36,6 @@
 		}
     	
     </style>
-    
-    <script type="text/javascript">
-    	let msg = '<%=request.getAttribute("msg")%>';
-    	
-		
-    	
-		function requestAction(url){
-			viewFrm.action=url;
-			viewFrm.submit();
-		}
-		
-		window.onload = function(){
-			if(msg != ''){
-				// 메세지 출력
-				document.querySelector(".modal-body").innerHTML = msg;
-				
-				// 버튼 출력 제어
-				document.querySelector("#btnModalSave").style.display='none';
-				
-				// 모달 생성
-				let myModal = new bootstrap.Modal(document.getElementById('myModal'), {
-					  keyboard: false
-					})
-				
-				// 모달 보여주기
-				myModal.show();
-			}
-			
-		}
-    </script>
 
 </head>
 

@@ -19,11 +19,5 @@ public interface BookService {
 	
 	// 도서 등록
 	public int insert(BookVO book);
-	
-	// 도서 삭제
-	public int delete(int no);
-	
-	// 도서 업데이트
-	public int update(BookVO book);
 
 }

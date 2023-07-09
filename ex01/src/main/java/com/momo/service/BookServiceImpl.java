@@ -62,20 +62,4 @@ public class BookServiceImpl implements BookService{
 		return res;
 	}
 	
-	
-	@Override
-	public int delete(int no) {
-		int res = bookmapper.delete(no);
-		return res;
-	}
-	
-	
-	@Override
-	public int update(BookVO book) {
-		int res = bookmapper.update(book);
-		return res;
-	}
-	
-	
-	
 }

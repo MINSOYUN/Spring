@@ -79,22 +79,4 @@ public class BookTest {
 		log.info("res: " +res);
 		log.info("book: " + book);
 	}
-	
-	
-	@Test
-	public void delete() {
-		int res = bookmapper.delete(49);
-		log.info("===========");
-		log.info("res : " + res);
-	}
-	
-	@Test
-	public void update() {
-		BookVO book = bookmapper.getOne(52);
-		book.setTitle("제목");
-		book.setAuthor("작가");
-		book.setPublisher("출판사");
-		int res = bookmapper.update(book);
-		log.info("res : " + res);
-	}
 }

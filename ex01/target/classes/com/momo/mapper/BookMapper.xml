@@ -48,17 +48,8 @@
 		<selectKey keyProperty="no" order="BEFORE" resultType="int">
 			select seq_book_no.nextval from dual
 		</selectKey>
-		insert into book(no, title, author, publisher, rentyn, visitcount, postdate) 
-		values(#{no}, #{title}, #{author}, #{publisher}, 'N', 0, sysdate)
+		insert into book(no, title, author, publisher, rentyn, visitcount, postdate, info) 
+		values(#{no}, #{title}, #{author}, #{publisher}, 'N', 0, sysdate, #{info} )
 	</insert>
-	
-	
-	<delete id="delete">
-		delete from book where no = #{no}
-	</delete>
-	
-	<update id="update">
-		update book set title=#{title}, author=#{author}, publisher=#{publisher} where no = #{no}
-	</update>
 	
 </mapper>

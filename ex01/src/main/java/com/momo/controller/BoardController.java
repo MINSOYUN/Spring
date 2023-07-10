@@ -23,6 +23,11 @@ import lombok.extern.log4j.Log4j;
 @Controller  // s 붙었는지 확인!
 @RequestMapping("/board/*")
 public class BoardController {
+	
+	@GetMapping("/reply/test")
+	public String test() {
+		return "/reply/test";
+	}
 
 	@GetMapping("message")
 	public void message(Model model) {

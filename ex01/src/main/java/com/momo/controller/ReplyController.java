@@ -90,7 +90,7 @@ public class ReplyController {
 		if(res>0) {
 			map.put("result", "success");
 		} else {
-			map.put("result", "fail");
+			map.put("result", "fail"); 
 			map.put("message", "댓글 등록 중 예외사항이 발생하였습니다");
 		}
 		return map;

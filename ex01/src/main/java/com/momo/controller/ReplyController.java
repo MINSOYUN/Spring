@@ -41,7 +41,7 @@ public class ReplyController {
 	 * @param bno
 	 * @return
 	 */
-	@GetMapping("/reply/list/{bno}")  // url을 호출할 때 bno 값을 받아온다
+	@GetMapping("/reply/list/{bno}")  
 	public List<ReplyVO> getList(@PathVariable("bno") int bno){
 		log.info("bno : " + bno);
 		return service.getList(bno);

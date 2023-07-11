@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.momo.book.BookTest;
 import com.momo.mapper.ReplyMapper;
+import com.momo.vo.Criteria;
 import com.momo.vo.ReplyVO;
 
 import lombok.extern.log4j.Log4j;
@@ -26,9 +27,13 @@ public class ReplyTest {
 	ReplyMapper mapper;
 	
 	@Test
-	public void test() {
+	public void getList() {
 		assertNotNull(mapper);
-		List<ReplyVO> list = mapper.getList(83);
+		Criteria cri = new Criteria();
+		// 생성자 통해 페이지 번호와 한 페이지당 댓글 수 set 하여 test
+		cri.setAmount(5);
+		cri.setPageNo(1);
+		List<ReplyVO> list = mapper.getList(83, cri);
 		log.info("list : " + list);
 	}
 	
@@ -56,12 +61,18 @@ public class ReplyTest {
 	
 	@Test
 	public void update() {
-		ReplyVO replyvo = mapper.getOne(13);
+		ReplyVO replyvo = new ReplyVO();
+		replyvo.setRno(16);
 		replyvo.setReply("수정테스트");
-		replyvo.setReplyer("수정테스트");
 		int res = mapper.update(replyvo);
 	
 		log.info("res : " + res);
 		log.info("replyvo : " + replyvo);
+	}
+	
+	@Test
+	public void totalCnt() {
+		int res = mapper.totalCnt(83);
+		log.info("res : " + res);
 	}
 }

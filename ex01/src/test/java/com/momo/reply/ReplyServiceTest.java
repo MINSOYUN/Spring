@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.momo.service.ReplyService;
+import com.momo.vo.Criteria;
 import com.momo.vo.ReplyVO;
 
 import lombok.extern.log4j.Log4j;
@@ -26,7 +27,10 @@ public class ReplyServiceTest {
 	@Test
 	public void test() {
 		assertNotNull(service);
-		List<ReplyVO> list = service.getList(83);
+		Criteria cri = new Criteria();
+		cri.setAmount(5);
+		cri.setPageNo(1);
+		List<ReplyVO> list = service.getList(83, cri);
 		log.info("list : " + list);
 	}
 	
@@ -48,8 +52,15 @@ public class ReplyServiceTest {
 	
 	@Test
 	public void update() {
-		ReplyVO replyvo = service.getOne(13);
+		ReplyVO replyvo = new ReplyVO();
+		replyvo.setRno(16);
 		replyvo.setReply("댓글");
 		replyvo.setReplyer("작성자");
+	}
+	
+	@Test
+	public void totalCnt() {
+		int res = service.totalCnt(83);
+		log.info("res : " + res);
 	}
 }

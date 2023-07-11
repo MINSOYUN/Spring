@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.momo.service.ReplyService;
+import com.momo.vo.Criteria;
+import com.momo.vo.PageDto;
 import com.momo.vo.ReplyVO;
 
 import lombok.extern.log4j.Log4j;
@@ -37,14 +39,31 @@ public class ReplyController {
 	/**
 	 * PathVariable
 	 * 	URL 경로에 있는 값을 파라미터로 추출하려고 할 때 사용
-	 *  경로의 일부분을 파라미터로 사용
+	 *  경로의 일부분을 파라미터로 사용 / URL 경로의 일부를 변수로 사용
+	 *  page도 받아올 거니까 @PathVariable("page") 작성
 	 * @param bno
 	 * @return
 	 */
-	@GetMapping("/reply/list/{bno}")  
-	public List<ReplyVO> getList(@PathVariable("bno") int bno){
+	@GetMapping("/reply/list/{bno}/{page}")  
+	public Map<String, Object> getList(@PathVariable("bno") int bno, @PathVariable("page") int page){
+		Map<String, Object> map = new HashMap<String, Object>();
+		
 		log.info("bno : " + bno);
-		return service.getList(bno);
+		log.info("page : " + page);
+	
+		Criteria cri = new Criteria();
+		cri.setPageNo(page); 
+		
+		List<ReplyVO> list = service.getList(bno, cri);
+		int totalCnt = service.totalCnt(bno);
+		// 페이지 블럭 생성
+		PageDto pageDto = new PageDto(totalCnt, cri);
+		
+		map.put("list", list);
+		map.put("totalCnt", totalCnt);
+		map.put("pageDto", pageDto);
+		
+		return map;
 	}
 	
 	
@@ -97,9 +116,18 @@ public class ReplyController {
 	}
 	
 	
-	@GetMapping("/reply/delete/{rno}")
-	public ReplyVO update(@PathVariable("rno") int rno) {
-		return service.getOne(rno);
+	@PostMapping("/reply/editAction")
+	public Map<String, Object> update (@RequestBody ReplyVO replyvo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int res = service.update(replyvo);
+		
+		if(res>0) {
+			map.put("result", "success");
+		} else {
+			map.put("result", "fail"); 
+			map.put("message", "댓글 수정 중 예외사항이 발생하였습니다");
+		}
+		return map;
 	}
 	
 }

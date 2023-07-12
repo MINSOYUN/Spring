@@ -58,6 +58,7 @@
 						<button type="submit" class="btn btn-primary btn-sm" onclick="requestAction('/board/editAction')">수정하기</button>
 						<button type="button" class="btn btn-secondary btn-sm" onclick="requestAction('/board/delete')">삭제하기</button>
 						<button type="reset" class="btn btn-secondary btn-sm">작성 취소</button>
+						<button type="button" class="btn btn-primary btn-sm" onclick="location.href='./list';">목록 보기</button>
 				</div>	
 		</form>
 	</div>

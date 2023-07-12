@@ -28,6 +28,11 @@ public class BoardController {
 	public String test() {
 		return "/reply/test";
 	}
+	
+	@GetMapping("/reply/prec")
+	public String test2() {
+		return "/reply/prec";
+	}
 
 	@GetMapping("message")
 	public void message(Model model) {

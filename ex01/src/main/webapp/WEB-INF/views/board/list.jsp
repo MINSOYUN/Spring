@@ -56,10 +56,10 @@
 
 <main class="container">
   <div class="bg-light p-5 rounded">
-    <h3>게시판</h3>
+    <h3>Board</h3>
     <p class="lead">부트스트랩을 이용한 게시판 만들기</p>
     <p class="lead">This example is a quick exercise to illustrate how fixed to top navbar works. As you scroll, it will remain fixed to the top of your browser’s viewport.</p>
-    <a class="btn btn-lg btn-primary" href="/board/write" role="button">ʟɪsᴛ &raquo;</a>
+    <a class="btn btn-lg btn-primary" href="/board/write" role="button">Writing &raquo;</a>
   </div>
 <p></p>
 <%@include file="../common/searchForm.jsp" %>

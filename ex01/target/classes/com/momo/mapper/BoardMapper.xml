@@ -17,11 +17,13 @@
 	XML에서 부등호를 사용하기 위해 사용 
 	-->
 	
+	
 	<!-- 패키지명을 포함한 풀 경로 -->
 	<select id="getListXml" resultType="com.momo.vo.BoardVO">
 		<![CDATA[ select * from (
 		select t.*, rownum rn from (
-			select * from tbl_board where bno>0 
+			select bno, title, content, to_char(regdate, 'yyyy-MM-dd') regdate, updatedate
+			from tbl_board where bno>0 
 		]]>
 				<include refid="criteria"/> order by bno desc
 				) t )

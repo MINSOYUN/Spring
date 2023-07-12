@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<script src="https://kit.fontawesome.com/a79d7cf7c1.js" crossorigin="anonymous"></script>
 </head>
 
 <!-- 메세지 모달 스크립트 -->
@@ -17,7 +19,7 @@
 		history.go(-1);
 	} */
 	
-	window.onload = function(){
+	window.addEventListener('load', function(){
 		if(msg != ''){
 			// 메세지 출력
 			document.querySelector(".modal-body").innerHTML = msg;
@@ -34,7 +36,8 @@
 			myModal.show();
 		}
 		
-	}
+	}); 
+		
 </script>
 
 <!-- Modal -->

@@ -27,8 +27,13 @@ import lombok.Data;
 		private String id;
 		private String pw;
 		private String name;
-		private int age;
 		private String adminyn;
+		private String status;
+		private String grade;
+		private String ofile;
+		private String sfile;
+		private String info;
+		
 		
 		@DateTimeFormat(pattern="yyyy/MM/dd")
 		private Date dueDate;

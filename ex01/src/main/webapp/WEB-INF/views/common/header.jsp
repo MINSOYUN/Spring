@@ -80,30 +80,20 @@
           <a class="nav-link disabled">Disabled</a>
         </li>
         
-        <c:if test="${empty sessionScope.userId }" var="res1">
         <li class="nav-item" class="nav-item ml-auto">
           <a class="nav-link" dropdown-toggle href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">MyPage</a>
 	          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-	            <li><a class="dropdown-item" href="/member/mypage">My Information</a></li>
+	            <li><a class="dropdown-item" href="#">My Information</a></li>
 	     		<li><a class="dropdown-item" href="#">Logout</a></li>
        		 </ul>
         </li>
-         </c:if>
-         <c:if test="${not res1 }">
-         	<li class="nav-item">
-          	<a class="nav-link disabled">Login</a>
-       		</li>
-         </c:if>
+       	<li class="nav-item">
+          	<a class="nav-link" href="../login">Login</a>
+   		</li>
         
       </ul>
       
       <form class="d-flex" role="search">
-      	<select class="form-select" aria-label="Default select example">
-		  <option selected>select option</option>
-		  <option value="title">제목</option>
-		  <option value="content">내용</option>
-		  <option value="writer">작성자</option>
-		</select>
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>

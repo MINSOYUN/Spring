@@ -1,6 +1,7 @@
 package com.momo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 
@@ -111,12 +112,12 @@ public class BoardController {
 		log.info("res : " + res);
 		
 		if(res > 0) {
-			msg = board.getBno() + "번 게시글이 등록되었습니다";
+			msg = "Post" + board.getBno() + "has been registered";
 			//rttr.addAttribute("msg", msg);   // url?msg=등록 -> 쿼리스트링으로 전달 ${param.msg}
 			rttr.addFlashAttribute("msg", msg);  // 세션영역에 저장 -> 새로 고침시 유지되지 않음  ${msg}
 			return "redirect:/board/list";  // request 영역 공유 x -> 데이터 유지x
 		} else {
-			msg = "등록 중 예외가 발생하였습니다";
+			msg = "An exception occurred during registration";
 			model.addAttribute("msg", msg);
 			return "/board/message"; // redirect: 안쓰면 리스트 조회x
 		}
@@ -134,7 +135,11 @@ public class BoardController {
 	
 	// 게시글 업데이트
 	@PostMapping("editAction")
-	public String editAction(BoardVO board, Model model, RedirectAttributes rttr) {
+	public String editAction(BoardVO board, Criteria cri, Model model, RedirectAttributes rttr) {
+		// ?pageNo=1   -> request.getParam("pageNo");  받기
+		// request.setAttr("") request 내장 객체에 저장
+		// request.setAttr("") ${param.pageNo}
+		// request.getAttr("") / session.setAttr("") -> ${pageNo} 내장객체에 저장하면 ${}꺼내옴
 		int res = boardService.update(board);
 		
 		String msg = "";
@@ -142,13 +147,16 @@ public class BoardController {
 		log.info("board : "+ board);
 		
 		if(res > 0) {
-			// redirect 시 request 영역이 공유 되지 않으므로 RedirectAttributes 를 이용합니다
+			// redirect 시 request 영역이 공유 되지 않으므로 RedirectAttributes 를 이용
+			msg = "Post" + board.getBno() + "has been modified";
+			rttr.addFlashAttribute("msg", msg); 
+			rttr.addAttribute("pageNo",cri.getPageNo());   // attribute 는 parameter로 넘겨준다
+			rttr.addAttribute("pageNo",cri.getSearchField());   
+			rttr.addAttribute("pageNo",cri.getSearchWord());   
 			
-			msg = board.getBno() + "번 게시글이 수정되었습니다";
-			rttr.addFlashAttribute("msg", msg);  
 			return "redirect:/board/view?bno=" + board.getBno();
 		} else {
-			msg = "게시믈 수정 중 예외가 발생하였습니다";
+			msg = "Exception while modifying post";
 			model.addAttribute("msg", msg);
 			return "/board/message";
 		}
@@ -164,11 +172,11 @@ public class BoardController {
 		
 		String msg = "";
 		if(res>0) {
-			msg = bno + "번 게시글이 삭제되었습니다";
+			msg = "Post" + bno + "has been deleted";
 			rttr.addFlashAttribute("msg", msg);  
 			return "redirect:/board/list";
 		} else {
-			msg = "게시글 삭제 중 예외가 발생하였습니다";
+			msg = "Exception while deleting post";
 			model.addAttribute("msg", msg);
 			return "/board/message";
 		}
@@ -181,6 +189,4 @@ public class BoardController {
 		model.addAttribute("totalCnt", res);
 	}
 	
-	
-	// 게시글 삭제
 }

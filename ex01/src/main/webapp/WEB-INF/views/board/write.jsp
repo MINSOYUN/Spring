@@ -25,6 +25,15 @@
 		writeFrm.submit();
 		
 	}
+	
+	// 왜 다 로드되고 실행
+	window.addEventListener('load', function(){
+		btnList.addEventListener('click', function(){
+			viewFrm.action="/board/list";
+			viewFrm.method="get";
+			viewFrm.submit();
+		});
+	})
 </script>
 </head>
 <body>
@@ -33,10 +42,10 @@
 
 <main class="container">
   <div class="bg-light p-5 rounded">
-    <h3>게시판</h3>
-    <p class="lead">부트스트랩을 이용한 게시판 만들기</p>
+    <h3>Board</h3>
+    <p class="lead" style="font-style: italic;">Creating a bulletin board using bootstrap</p>
     <p class="lead">This example is a quick exercise to illustrate how fixed to top navbar works. As you scroll, it will remain fixed to the top of your browser’s viewport.</p>
-    <a class="btn btn-lg btn-primary" href="/board/list" role="button">리스트 &raquo;</a>
+    <a class="btn btn-outline-success" href="/board/list" role="button">List &raquo;</a>
   </div>
 <p></p> <p></p>
 		  <div class="list-group w-auto">

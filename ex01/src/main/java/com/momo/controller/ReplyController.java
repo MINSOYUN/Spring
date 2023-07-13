@@ -26,7 +26,7 @@ import lombok.extern.log4j.Log4j;
  */
 @RestController
 @Log4j
-public class ReplyController {
+public class ReplyController extends CommonRestController{
 	
 	@Autowired
 	ReplyService service;
@@ -59,11 +59,12 @@ public class ReplyController {
 		// 페이지 블럭 생성
 		PageDto pageDto = new PageDto(totalCnt, cri);
 		
-		map.put("list", list);
-		map.put("totalCnt", totalCnt);
-		map.put("pageDto", pageDto);
+//		map.put("list", list);
+//		map.put("totalCnt", totalCnt);
+//		map.put("pageDto", pageDto);
+//		return map;
 		
-		return map;
+		return responseListMap(list, pageDto);
 	}
 	
 	
@@ -76,16 +77,18 @@ public class ReplyController {
 	 */
 	@GetMapping("/reply/delete/{rno}")
 	public Map<String, Object> delete(@PathVariable("rno") int rno){
-		Map<String, Object> map = new HashMap<String, Object>();
-		int res = service.delete(rno);
-		
-		if(res>0) {
-			map.put("result", "success");
-		} else {
-			map.put("result", "fail");
-			map.put("message", "댓글 삭제 중 예외사항이 발생하였습니다");
-		}
-		return map;
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		int res = service.delete(rno);
+//		
+//		if(res>0) {
+//			map.put("result", "success");
+//		} else {
+//			map.put("result", "fail");
+//			map.put("message", "댓글 삭제 중 예외사항이 발생하였습니다");
+//		}
+//		return map;
+		// res, msg 
+		return responseDeleteMap(service.delete(rno));  // -> CommonRestController
 	}
 	
 	
@@ -102,18 +105,11 @@ public class ReplyController {
 		log.info("=============");
 		log.info("ReplyVO : " + vo);
 		
-		int res = service.insert(vo);
-	
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		
 		try {
-			if(res>0) {
-				map.put("result", "success");
-			} else {
-				map.put("result", "fail"); 
-				map.put("message", "댓글 등록 중 예외사항이 발생하였습니다");
-			}
+			int res = service.insert(vo);
+			return map = responseWriteMap(res);
 			
 		} catch (Exception e) {
 			map.put("result", "fail");
@@ -126,16 +122,17 @@ public class ReplyController {
 	
 	@PostMapping("/reply/editAction")
 	public Map<String, Object> update (@RequestBody ReplyVO replyvo) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		int res = service.update(replyvo);
-		
-		if(res>0) {
-			map.put("result", "success");
-		} else {
-			map.put("result", "fail"); 
-			map.put("message", "댓글 수정 중 예외사항이 발생하였습니다");
-		}
-		return map;
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		int res = service.update(replyvo);
+//		
+//		if(res>0) {
+//			map.put("result", "success");
+//		} else {
+//			map.put("result", "fail"); 
+//			map.put("message", "댓글 수정 중 예외사항이 발생하였습니다");
+//		}
+//		return map;
+		return responseEditMap(service.update(replyvo));
 	}
 	
 }

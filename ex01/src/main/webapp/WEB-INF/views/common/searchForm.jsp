@@ -22,10 +22,9 @@ ${pageDto }
 		<div class="row g-3 justify-content-center">
 		 	 <div class="col-auto">
 				<select name="searchField" class="form-select" aria-label="Default select example">
-				  <option selected>Select option</option>
-				  <option value="title" ${ pageDto.criteria.searchField eq "title" ? "selected" : ""}>제목</option>
-				  <option value="content" ${ pageDto.criteria.searchField eq "content" ? "selected" : ""}>내용</option>
-				  <option value="writer" ${ pageDto.criteria.searchField eq "writer" ? "selected" : ""}>작성자</option>
+				  <option value="title" ${ pageDto.criteria.searchField eq "title" ? "selected" : ""}>Title</option>
+				  <option value="content" ${ pageDto.criteria.searchField eq "content" ? "selected" : ""}>Content</option>
+				  <option value="writer" ${ pageDto.criteria.searchField eq "writer" ? "selected" : ""}>Writer</option>
 				</select>
 		  </div>
 		  <!-- col-sm-5 : 칸 넓게 -->
@@ -34,7 +33,7 @@ ${pageDto }
 			    <input type="text" class="form-control" id="searchWord" name="searchWord" placeholder="Search Text" value="${pageDto.criteria.searchWord }">
 		  </div>
 		  <div class="col-auto">
-		   		<button type="submit" class="btn btn-primary mb-3">Search</button>
+		  		<button type="submit" class="btn btn-outline-warning">Search</button>
 		  </div>
 	  </div>
 </form>

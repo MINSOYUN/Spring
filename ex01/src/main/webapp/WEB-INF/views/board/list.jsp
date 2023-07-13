@@ -36,6 +36,8 @@
 	function requestAction(url, bno) {
 		searchForm.action = url;
 	 	searchForm.bno.value=bno;
+	 	console.log(searchForm.searchField.value);
+	 	console.log(searchForm.searchWord.value);
 	 	searchForm.submit();  
 	}
 
@@ -57,26 +59,26 @@
 <main class="container">
   <div class="bg-light p-5 rounded">
     <h3>Board</h3>
-    <p class="lead">부트스트랩을 이용한 게시판 만들기</p>
+    <p class="lead" style="font-style: italic;">Creating a bulletin board using bootstrap</p>
     <p class="lead">This example is a quick exercise to illustrate how fixed to top navbar works. As you scroll, it will remain fixed to the top of your browser’s viewport.</p>
-    <a class="btn btn-lg btn-primary" href="/board/write" role="button">Writing &raquo;</a>
+    <a class="btn btn-outline-success" href="/board/write" role="button">Writing &raquo;</a>
   </div>
 <p></p>
 <%@include file="../common/searchForm.jsp" %>
-	총 게시글 수 : ${totalCnt } 건
+	<p></p>
+	Total number of posts : ${totalCnt }
 	
 <p></p>
  	<c:forEach items="${list}" var="vo" step="1">
- 	<a onclick="requestAction('/board/view', ${vo.bno})" href="#" class=""></a>
 		  <div class="list-group w-auto">
+ 			<a onclick="requestAction('/board/view', ${vo.bno})" href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
 		  <!-- 체크 박스 -->
 		  <div class="form-check">
 			  <input class="form-check-input" type="checkbox" id="check"  name="check" value="${vo.bno }">
 			  <label class="form-check-label" for="check">
 			  </label>
 		  </div>
-		    <a href="/board/view?bno=${vo.bno }" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-		      <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">🎀
+		      <img src="/resources/img/mouse-cursor.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
 		      <div class="d-flex gap-2 w-100 justify-content-between">
 		        <div>
 		          <h6 class="mb-0">${vo.title }</h6>
@@ -90,7 +92,7 @@
    <p></p>
    <%@ include file= "../common/pageNavi.jsp" %>
    <div class="button-container">
-   	<button type="button" class="btn btn-outline-danger narrow-button" onclick="deleteBoard()">삭제</button>
+   	<button type="button" class="btn btn-outline-danger narrow-button" onclick="deleteBoard()">Delete</button>
    </div>
 </main>
 

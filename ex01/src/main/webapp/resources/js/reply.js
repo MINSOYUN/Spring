@@ -39,7 +39,14 @@ console.log('========')
 	
 	
 	// 댓글 조회 및 출력
+	// 매개변수 page 입력 -> 페이징 처리
 	function getReplyList(){
+		/**
+		 * falsey : false, 0, "",NaN, undefined, null
+		 * -> page에 입력된 값이 없으면 1을 세팅
+		 * falsey한 값 이외의 값이 들어 있으면 true를 반환
+		 */
+		
 		let bno = document.querySelector('#bno').value;
 		let page = document.querySelector("#page").value;
 		
@@ -53,8 +60,9 @@ console.log('========')
 	}
 	
 	function getPage(page){
+		//id page 값을 page로 저장
 		document.querySelector("#page").value = page ; 
-		getReplyList();
+		getReplyList();  // 댓글 조회 function 호출
 	}
 	
 	// 댓글 화면에 출력
@@ -66,7 +74,7 @@ console.log('========')
 		
 		// 배열은 있으니까 !list 가 아니라 list 사이즈(length)를 확인하여 메세지 처리
 		if(list.length == 0){
-			replyDiv.innerHTML = '등록된 댓글이 없습니다'
+			replyDiv.innerHTML = '<em>No registered comments</em>';
 			
 		} else{
 			
@@ -82,16 +90,17 @@ console.log('========')
 				+'  <tbody>                         ';
 				
 				// 리스트를 돌며 출력
-				// rno도 유일한 값이기 때문에 index 대신 사용 가능
 				list.forEach( reply=>{
 					replyDivStr += 
+						// rno도 유일한 값이기 때문에 index 대신 사용 가능
+						// data-value -> 입력된 내용을 확인 하기 위해서 dataset.value로 값을 꺼내옴
 					'    <tr id="tr'+reply.rno+'" data-value="'+reply.reply+'" >'  // ex) tr1, tr2                          '
-					+'      <th scope="row">'+reply.rno+'</th>      '
-					+'      <td class="text-start">'+reply.reply+''
-					+			'<i class="fa-solid fa-pen-to-square" onclick="replyEdit('+reply.rno+')"></i>'
-					+			'<i class="fa-regular fa-square-minus" onclick="replyDelete('+reply.rno+')"></i>'
+					+'      <th scope="row">'+reply.rno+'</th>      '  // 댓글 번호
+					+'      <td class="text-start">'+reply.reply+''  // 댓글 내용
+					+			'<i class="fa-solid fa-pen-to-square" onclick="replyEdit('+reply.rno+')"></i>'  // 수정
+					+			'<i class="fa-regular fa-square-minus" onclick="replyDelete('+reply.rno+')"></i>'  // 삭제
 					+'		</td>               '
-					+'      <td>'+reply.replyer
+					+'      <td>'+reply.replyer   // 댓글 작성자 + 작성일
 					+' 		<br>'+reply.replydate+'</td>   '
 					+'    </tr>   ';
 					
@@ -102,6 +111,7 @@ console.log('========')
 				+'</table>      '; 
 				
 				// 화면에 출력
+				// innerHTML은 덮어 쓰여지기 때문에 변수 하나 설정 후 넣는다
 				replyDiv.innerHTML = replyDivStr;
 				
 				
@@ -109,27 +119,30 @@ console.log('========')
 				let pageBlock= 
 				  `<nav aria-label="...">    `
 					+ `  <ul class="pagination justify-content-end">   `;
-					if(pageDto.startNo){
+				
+					if(pageDto.prev){
 						pageBlock +=
-						 `    <li class="page-item disabled" onclick=getPage(`+(pageDto.startNo-1)+`>       `
+							// 백틱 ${i}로 설정 가능
+						 `    <li class="page-item disabled" onclick="getPage(${pageDto.startNo-1})">       `
 						+ `      <a class="page-link">Previous</a>     `
-						+ `    </li>          `;    
+						+ `    </li>   `;    
 						
 					}
 				
 				      for(i=pageDto.startNo; i<=pageDto.endNo; i++){
+				    	  // 삼항 연산자 사용 -> 같다면 버튼 활성화
 				    	  let activeStr = (pageDto.criteria.page==i)?'active':'';
 				    	  pageBlock +=
-				    	  `    <li class="page-item `+activeStr+`" onclick="getPage(`+i+`)">`
+				    	  `    <li class="page-item ${activeStr}" onclick="getPage(${i})">`
 				    	  + ` <a class="page-link" href="#">`+i+`</a></li>  `;
 				    	  
 				      }                                  
 				
-				if(pageDto.endNo){
+				if(pageDto.next){
 					pageBlock +=
-					 `    <li class="page-item" onclick=getPage(`+(pageDto.endNo+1)+`>   `
+					 `    <li class="page-item" onclick="getPage(${pageDto.endNo+1})">   `
 					+ `      <a class="page-link" href="#">Next</a>    `
-					+ `    </li>     `;
+					+ `    </li> `;
 					
 				}
 				pageBlock +=
@@ -166,9 +179,10 @@ console.log('========')
 	function replyRes(map){
 		console.log(map);
 		if(map.result=='success'){
+			alert(map.msg);
 			getReplyList();
 		}else{
-			alert(map.message);
+			alert(map.msg);
 		}
 		// 성공 시 리스트 조회 및 출력
 		// 실패시 메시지 알람

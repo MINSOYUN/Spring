@@ -36,14 +36,36 @@ public class MemberServiceTest {
 	@Test
 	public void insert() {
 		Member member = new Member();
-		member.setId("메가");
+		member.setId("admin");
 		member.setPw("1234");
-		member.setName("커피");
-		member.setAdminyn("N");
-		member.setGrade("C");
+		member.setName("관리자");
 		int res = service.insert(member);
 		log.info("==========");
 		log.info("member : " + member);
+		log.info("res : " + res);
+	}
+	
+	@Test
+	public void idCheck() {
+		Member member = new Member();
+		member.setId("sso");
+		int res = service.idCheck(member);
+		
+		log.info("=========");
+		log.info("res : " + res);
+	}
+	
+	@Test
+	public void delete() {
+		int res = service.delete("강아지등록");
+		log.info("=========");
+		log.info("res : " + res);
+	}
+	
+	@Test
+	public void memberCnt() {
+		int res = service.memberCnt();
+		log.info("======");
 		log.info("res : " + res);
 	}
 	

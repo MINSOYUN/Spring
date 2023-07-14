@@ -73,23 +73,22 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
+        
+        <c:if test="${empty userId }" var="res">
+	        <li class="nav-item">
+	          <a class="nav-link" href="/login">Login</a>
+	        </li>
+        </c:if>
+        
+        <c:if test="${not res }">
+	        <li class="nav-item">
+	          <a class="nav-link" href="/logout">Logout</a>
+	        </li>
+        </c:if>
+        
         <li class="nav-item">
           <a class="nav-link disabled">Disabled</a>
         </li>
-        
-        <li class="nav-item" class="nav-item ml-auto">
-          <a class="nav-link" dropdown-toggle href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">MyPage</a>
-	          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-	            <li><a class="dropdown-item" href="#">My Information</a></li>
-	     		<li><a class="dropdown-item" href="#">Logout</a></li>
-       		 </ul>
-        </li>
-       	<li class="nav-item">
-          	<a class="nav-link" href="../login">Login</a>
-   		</li>
         
       </ul>
       

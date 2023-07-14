@@ -19,18 +19,15 @@ public interface MemberService {
 	
 	// 멤버 추가
 	public int insert(Member member);
+	
+	// idCheck
+	public int idCheck(Member member);
+	
+	// 멤버 삭제
+	public int delete(String name);
+	
+	// 멤버 수 조회
+	public int memberCnt();
 
 	
-	// model : Controller에서 생성한 데이터를 담아서 View로 전달할 때 사용하는 객체
-//	public Member login(Member paramMember, Model model) {
-//		Member member = memberMapper.login(paramMember);
-//	
-//		if(member == null) {
-//			model.addAttribute("message", "아이디/ 비밀번호를 확인해주세요");
-//			
-//		} else {
-//			model.addAttribute("message", member.getName()+"님 환영합니다");
-//		}
-//		return member;
-//	}
 }

@@ -12,8 +12,14 @@ public interface MemberMapper {
 	// 멤버 추가
 	public int insert(Member member);
 	
-//	// 멤버 삭제
-//	public int delete(String name);
+	// idCheck
+	public int idCheck(Member member);
+	
+	// 멤버 삭제
+	public int delete(String name);
+	
+	// 멤버 수 조회
+	public int memberCnt();
 	
 	// 멤버 수정
 

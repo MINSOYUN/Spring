@@ -35,11 +35,9 @@ public class MemberTest {
 	@Test
 	public void insert() {
 		Member member = new Member();
-		member.setId("메가");
+		member.setId("sso");
 		member.setPw("1234");
-		member.setName("커피");
-		member.setAdminyn("N");
-		member.setGrade("C");
+		member.setName("소윤");
 			
 		int res = mapper.insert(member);
 		log.info("==========");
@@ -47,11 +45,28 @@ public class MemberTest {
 		log.info("res : " + res);
 	}
 	
-//	@Test
-//	public void delete() {
-//		int res = mapper.delete("나예리");
-//		log.info("==========");
-//		log.info("res : " + res);
-//	}
+	@Test
+	public void idCheck() {
+		Member member = new Member();
+		member.setId("ADMIN");
+		int res = mapper.idCheck(member);
+		log.info("==========");
+		log.info("res : " + res);
+	}
+	
+	@Test
+	public void delete() {
+		int res = mapper.delete("나예리");
+		log.info("==========");
+		log.info("res : " + res);
+	}
+	
+	@Test
+	public void memberCnt() {
+		int res = mapper.memberCnt();
+		log.info("==========");
+		log.info("res : " + res);
+	}
+	
 
 }

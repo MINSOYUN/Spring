@@ -5,16 +5,31 @@
 
 <mapper namespace="com.momo.mapper.MemberMapper">
 
+	<!-- 멤버 조회 -->
 	<select id="login" resultType="com.momo.vo.Member">
-		select id, pw, name, adminyn, status, grade from member where id=#{id} and pw=#{pw}
+		select id, pw, name, adminyn, status, grade from member where id=#{id}
 	</select>
 	
+	<!-- 멤버 추가 -->
 	<insert id="insert">
-		insert into member(id, pw, name, adminyn, status, grade) values(#{id}, #{pw}, #{name}, #{adminyn}, 'N', #{grade})
+		insert into member(id, pw, name) values(#{id}, #{pw}, #{name})
 	</insert>
 	
-	<!-- <delete id="delete">
+	<!-- idCheck -->
+	<select id="idCheck" resultType="int">
+		select count(*) from member where id= #{id}
+	</select>
+	
+	<!-- 멤버 삭제 -->
+	<delete id="delete">
 		delete from member where name=#{name} 
-	</delete>  -->
+	</delete>  
+	
+	<!-- 멤버 수 -->
+	<select id="memberCnt" resultType="int">
+		select count(*) from member
+	</select>
+	
+	
 
 </mapper>

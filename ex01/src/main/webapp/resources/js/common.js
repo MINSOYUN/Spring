@@ -24,9 +24,6 @@
 	* fetch Post 방식
 	*/
 	function fetchPost(url, obj, callback){
-		console.log(url);
-		console.log(obj);
-		console.log(callback);
 		try {
 		fetch(url, {method : 'post', headers : {'Content-Type' : 'application/json'}, body : JSON.stringify(obj)})
 		.then(response => response.json())

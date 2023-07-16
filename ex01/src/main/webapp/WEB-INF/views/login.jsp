@@ -116,6 +116,7 @@
 	// 페이지가 다 로드되고 버튼이 클릭해야 id 가 넘어온다
 	window.addEventListener('load', function(){
 		
+		// ============= 로그인 버튼 =============
 		btnLogin.addEventListener('click', function(e){  // 받아와야 제거 가능
 			// 기본 이벤트 제거
 			e.preventDefault(); // 폼 제출 등의 동작이 발생하지 않고 정의한 함수 실행
@@ -142,7 +143,8 @@
         
           
           
-          
+        
+        // =========== 회원가입 - 아이디 입력 칸 ===========
         // blur : 이벤트 이름 -> 포커싱 나가면 이벤트 실행
         signUpId.addEventListener('blur', function(){
         	// 아이디 체크 -> 서버에 방문 필요!
@@ -154,7 +156,7 @@
 			
         	// 파라미터 세팅
         	let obj = {id : signUpId.value};   // <input> 태그 id(signUpId)에서 입력 받은 id의 value 값
-        	console.log("obj 1324 : ", obj)
+        	console.log("obj : ", obj)
         	
         	// (map) => function idCheck(map)
         	fetchPost('/idCheck', obj, (map)=>{
@@ -175,6 +177,8 @@
           
     	});	
         	
+        
+          // ======== 회원가입 - 비밀번호 칸 ===============
           pwCheck.addEventListener('blur', function(){
         	  // 비밀번호 체크 -> 서버에 방문x!
         	  

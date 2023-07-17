@@ -82,4 +82,10 @@ public class BoardServiceTest {
 		log.info("res: "+ res);
 		assertEquals(res, 1);
 	}
+	
+	@Test
+	public void updateReplyCnt() {
+		int res = boardService.updateReplyCnt(83, 1);
+		log.info("res : "  + res);
+	}
 }

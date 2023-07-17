@@ -22,8 +22,24 @@
 	</beans:bean>
 	
 	<!-- 패키지에 있는 컨트롤러 실행 .ex 삭제-->
-	<context:component-scan base-package="com.momo" />
+	<context:component-scan base-package="com.momo.controller" />
+	<context:component-scan base-package="com.momo.interceptor" />
 	
 	
+	<interceptors >
+		<!-- 로그인 체크 -->
+		<interceptor>
+			<mapping path="/board/*"/>
+			<!-- 제외 경로 지정 -->
+			<exclude-mapping path=""/>
+			<beans:ref bean="loginInterceptor"></beans:ref>
+			</interceptor>
+			
+		<!-- 관리자 체크 -->
+		<interceptor>
+			<mapping path="/admin**"/>
+			<beans:ref bean="adminInterceptor"></beans:ref>
+		</interceptor>
+	</interceptors>
 	
 </beans:beans>

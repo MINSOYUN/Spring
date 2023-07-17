@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.momo.service.MemberService;
 import com.momo.vo.Member;
 
+import lombok.extern.log4j.Log4j;
+
 
 // controller 어노테이션 작성하여 컨트롤러임을 명시
 @Controller
+@Log4j
 public class MemberController extends CommonRestController{  // map(res,msg) extends
 	
 	// 주입
@@ -58,11 +61,23 @@ public class MemberController extends CommonRestController{  // map(res,msg) ext
 	
 		member = service.login(member);
 		System.out.println("member: " + member);
+		
 		if(member != null) {
 			// member 가 null 이 아니라 성공 -> 1반환
 			session.setAttribute("member", member);   // session에 저장
 			session.setAttribute("userId", member.getId());
-			return responseMap(REST_SUCCESS, "로그인 되었습니다.");   // map 반환 (성공, msg)
+			
+			// =========================== 관리자면 관리자 페이지로 이동 ======================
+			Map<String, Object> map = responseMap(REST_SUCCESS, "로그인 되었습니다");
+			// 권한 확인
+			if(member.getRole() != null && member.getRole().contains("ADMIN_ROLE")) {
+				map.put("url", "/admin");  // 관리자면 admin 페이지로
+				log.info("URL 주소: " + map.get("url"));
+			} else {
+				map.put("url", "/board/list");  // 아니면 list로
+			}
+			
+			return map;
 		} else {
 			return responseMap(REST_FAIL, "아이디와 비밀번호를 확인해주세요.");
 		}

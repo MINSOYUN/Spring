@@ -70,6 +70,10 @@
 		update tbl_board set title = #{title}, content = #{content}, writer = #{writer} where bno = #{bno}
 	</update>
 	
+ 	<update id="updateReplyCnt">
+    	update tbl_board set replycnt = replycnt + #{amount} where bno = #{bno}
+    </update>
+	
 	
 	<select id="getTotalCnt" resultType="int">
 		select count(*) from tbl_board where 1=1

@@ -261,10 +261,11 @@
 	// 로그인 체크
 	function loginCheck(map){
 		console.log(map);
+		
 		if(map.result=='success'){
 			// 로그인 성공 -> list 로 이동
-			alert(map.msg);
-			location.href="/board/list";
+			// membercontroller의 map.url
+			location.href=map.url;
 		} else{
 			// 실패 -> 메세지 처리
 			alert(map.msg);

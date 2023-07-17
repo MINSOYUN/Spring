@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,7 +70,12 @@ public class BoardController {
 	// 리스트 조회
 	@GetMapping("list")
 	public void getList(Criteria cri, Model model) {
+		StopWatch stopwatch = new StopWatch();
+		stopwatch.start();
 		boardService.getListXml(cri, model);
+		stopwatch.stop();
+		log.info("======= list ========");
+		log.info("수행시간 : " + stopwatch.getTotalTimeMillis()+"(ms)초");
 	}
 	
 	

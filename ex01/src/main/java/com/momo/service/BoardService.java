@@ -2,6 +2,7 @@ package com.momo.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -29,5 +30,8 @@ import com.momo.vo.Criteria;
 		
 		// 총 건수
 		public int getTotalCnt(Criteria cri);
+		
+		// 게시글 당 댓글  수
+		public int updateReplyCnt(@Param("bno")int bno, @Param("amount")int amount);
 		
 }

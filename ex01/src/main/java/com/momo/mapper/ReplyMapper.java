@@ -34,4 +34,6 @@ public interface ReplyMapper {
 	// 댓글 건수
 	public int totalCnt(int bno);
 	
+	
+	
 }

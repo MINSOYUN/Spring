@@ -21,6 +21,7 @@ public interface MemberMapper {
 	// 멤버 수 조회
 	public int memberCnt();
 	
-	// 멤버 수정
+	// 권한 조회
+	public List<String> getMebmerRole(String id);
 
 }

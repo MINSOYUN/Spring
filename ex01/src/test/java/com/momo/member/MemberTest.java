@@ -68,5 +68,11 @@ public class MemberTest {
 		log.info("res : " + res);
 	}
 	
+	@Test
+	public void testMemberRole() {
+		List<String> list = mapper.getMebmerRole("admin");
+		System.out.println("list : " + list);
+		System.out.println("관리자 권한 : " + list.contains("ADMIN_ROLE"));
+	}
 
 }

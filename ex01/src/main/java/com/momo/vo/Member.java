@@ -2,6 +2,7 @@ package com.momo.vo;
 
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -30,9 +31,9 @@ import lombok.Data;
 		private String adminyn;
 		private String status;
 		private String grade;
-		private String ofile;
-		private String sfile;
-		private String info;
+		
+		// 사용자 권한 조회하여 role에 넣어주기
+		private List<String> role;
 		
 		
 		@DateTimeFormat(pattern="yyyy/MM/dd")

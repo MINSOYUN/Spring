@@ -20,19 +20,18 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Override
 	public Member login(Member paramMember) {
-		// 사용자정보 조회
-		Member member = memberMapper.login(paramMember);  // <- id만 가져온 값
+		Member member = memberMapper.login(paramMember);
 		if(member != null) {
-			// 사용자가 입력한 비밀번호, 데이터베이스에 암호화되어 저장된 비밀번호 -> 일치하는지 확이!
-			boolean res = encoder.matches(paramMember.getPw(), member.getPw());
+			boolean res = encoder.matches(paramMember.getPw(), member.getPw());  
 			
-			// 비밀번호 인증이 성공하면 member 객체를 반환
 			if(res) {
+				member.setRole(memberMapper.getMebmerRole(member.getId()));
 				return member;
 			}
 		}
 		return null;
 	}
+	
 	
 	
 	@Override

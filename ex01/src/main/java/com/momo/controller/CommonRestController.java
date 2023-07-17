@@ -10,7 +10,7 @@ import com.momo.vo.ReplyVO;
 public class CommonRestController {
 	// ========= Map res, msg return ========== //
 	
-	private final String REST_WRITE = "회원가입";
+	private final String REST_WRITE = "등록";
 	private final String REST_EDIT = "수정";
 	private final String REST_DELETE = "삭제";
 	private final String REST_SELECT = "조회";

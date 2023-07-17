@@ -113,7 +113,7 @@ public class ReplyController extends CommonRestController{
 			
 		} catch (Exception e) {
 			map.put("result", "fail");
-			map.put("message",e.getMessage());
+			map.put("msg",e.getMessage());
 			
 		}
 		return map;

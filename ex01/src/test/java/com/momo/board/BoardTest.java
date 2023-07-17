@@ -110,4 +110,11 @@ public class BoardTest {
 		int res = boardMapper.getTotalCnt(cri);
 		log.info("totalCnt: " + res);
 	}
+	
+	@Test
+	public void updateReplyCnt() {
+		int res =boardMapper.updateReplyCnt(83, 1);
+		log.info("==========");
+		log.info("res : " + res);
+	}
 }

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.momo.mapper.BookMapper;
-import com.momo.vo.BoardVO;
 import com.momo.vo.BookVO;
 import com.momo.vo.Criteria;
 import com.momo.vo.PageDto;

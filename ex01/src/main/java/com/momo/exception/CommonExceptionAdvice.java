@@ -32,6 +32,7 @@ public class CommonExceptionAdvice {
 	@ExceptionHandler(Exception.class)
 	public String exception(Exception ex, Model model) {
 		System.out.println("Exception...." + ex.getMessage());
+		ex.printStackTrace();
 		// 상단에 @Log4j 작성하여 사용 가능!
 		log.info("Exception....");
 		log.debug("로그테스트 + debug");

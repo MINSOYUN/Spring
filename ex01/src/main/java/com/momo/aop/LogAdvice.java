@@ -71,6 +71,7 @@ public class LogAdvice {
 	 * Around
 	 * 타겟의 메서드가  호출되기 이전 시점과 이후 시점에 모두처리해야 할 필요가 있는 부가 기능 정의
 	 * 주업무로직을 실행 하기 위해 JoinPoint의 하위 클랙스인 ProceedingJoinPoint 타입의 파라미터를 필수적으로 선언해야 한다
+	 * 타겟메서드를 실행하고 결과를 반한하기 위해서!
 	 * @return pjp
 	 */
 	// service의 Board! 
@@ -109,7 +110,7 @@ public class LogAdvice {
 	@Autowired  // insert 사용해야 하기 때문에 @Autowired
 	LogService logService;
 	
-	@AfterThrowing(pointcut="execution(* com.momo.service.*.*(..))", throwing="exception")
+	@AfterThrowing(pointcut="execution(* com.momo.service.Board*.*(..))", throwing="exception")
 	public void logException(JoinPoint joinPoint, Exception exception) {
 		
 		// 예외가 발생 시 예외 내용을 테이블에 저장

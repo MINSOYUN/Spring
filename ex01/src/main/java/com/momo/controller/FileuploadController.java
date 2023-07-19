@@ -27,7 +27,7 @@ import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
 @Log4j
-public class FileuploadController {
+public class FileuploadController extends CommonRestController{
 	
 	
 	// service 사용하기 위해 주입
@@ -56,8 +56,79 @@ public class FileuploadController {
 	@PostMapping("/file/fileuploadAction")
 	// root-context 에 multipartResolver 등록해서  MultipartFile 사용 가능
 	public String fileAction(List<MultipartFile> files, int bno, RedirectAttributes rttr) {
-		int insertRes = 0;
+		// 파일 저장 및 등록 메서드 호출
+		int insertRes = fileupload(files, bno);
 		
+		String msg = insertRes + "건 저장되었습니다";
+		rttr.addAttribute("msg", msg); // 리다이렉트 시 URL에 파라미터로 저장
+		return "redirect:/file/fileupload?msg="+msg;
+	}
+	 
+	
+	
+	// fetch 용
+	@PostMapping("/file/fileuploadActionFetch")
+	public @ResponseBody Map<String, Object> fileAction(List<MultipartFile> files, int bno) {
+		log.info("fileuploadActionFetch");
+		int insertRes = fileupload(files, bno);
+		log.info("업로드 건수 : " + insertRes);
+		
+		return responseMap("success", insertRes+"건 저장되었습니다");
+	}
+	
+	
+	@GetMapping("/file/list/{bno}")   
+	public @ResponseBody Map<String, Object> fileList(@PathVariable("bno") int bno) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", service.getList(bno));
+		return map;
+	}
+	
+	
+	// 중복 방지용 업로드 날짜를 폴더 이름으로 사용
+	// 형식: 2023/07/18
+	public String getFolder() {
+		LocalDate currentDate = LocalDate.now();
+		log.info("currentDate : " + currentDate);
+		
+		// c:\\upload\\2023\07\18곰돌이.jpg 면 파일명이 되지 않으므로 파일 앞에 구분자 하나 더 넣어준다 -> 2023\07\18\
+		String uploadPath = currentDate.toString().replace("-", File.separator) + File.separator;
+		log.info("경로 : " + uploadPath);  // -를 파일의 기본자(\)로 변경
+		
+		// 폴더 없으면 생성
+		File saveDir = new File(ATTACHES_DIR + uploadPath);   // c:\\upload\\2023\07\18\
+		
+		if(!saveDir.exists()) {
+			if(saveDir.mkdirs()) {
+				// 디렉토리 여러개 생성
+				log.info("폴더 생성!!");
+			} else {
+				log.info("폴더 생성 실패!!");
+			}
+				
+		}
+		return uploadPath; // 2023\07\18\
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		LocalDate currentDate = LocalDate.now();
+		System.out.println("currentDate : " + currentDate);   // 2023-07-18
+		
+		String uploadPath = currentDate.toString().replace("-", File.separator) + File.separator;
+		System.out.println("경로 : " + uploadPath);  // 2023\07\18
+	}
+	
+	
+	/**
+	 * 첨부파일 저장 및 데이터 베이스에 등록
+	 * @param files
+	 * @param bno
+	 * @return
+	 */
+	public int fileupload(List<MultipartFile> files, int bno) {
+		int insertRes = 0;
 		for(MultipartFile file : files) {
 			// 선택된 파일이 비어 있는 경우 다음 파일로 이동
 			if(file.isEmpty()) {
@@ -135,54 +206,8 @@ public class FileuploadController {
 				e.printStackTrace();
 			}
 		}
-		
-		String msg = insertRes + "건 저장되었습니다";
-		rttr.addAttribute("msg", msg);
-		return "redirect:/file/fileupload?msg="+msg;
+		return insertRes;
 	}
 	
 	
-	
-	@GetMapping("/file/list/{bno}")   
-	public @ResponseBody Map<String, Object> fileList(@PathVariable("bno") int bno) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", service.getList(bno));
-		return map;
-	}
-	
-	
-	// 중복 방지용 업로드 날짜를 폴더 이름으로 사용
-	// 형식: 2023/07/18
-	public String getFolder() {
-		LocalDate currentDate = LocalDate.now();
-		log.info("currentDate : " + currentDate);
-		
-		// c:\\upload\\2023\07\18곰돌이.jpg 면 파일명이 되지 않으므로 파일 앞에 구분자 하나 더 넣어준다 -> 2023\07\18\
-		String uploadPath = currentDate.toString().replace("-", File.separator) + File.separator;
-		log.info("경로 : " + uploadPath);  // -를 파일의 기본자(\)로 변경
-		
-		// 폴더 없으면 생성
-		File saveDir = new File(ATTACHES_DIR + uploadPath);   // c:\\upload\\2023\07\18\
-		
-		if(!saveDir.exists()) {
-			if(saveDir.mkdirs()) {
-				// 디렉토리 여러개 생성
-				log.info("폴더 생성!!");
-			} else {
-				log.info("폴더 생성 실패!!");
-			}
-				
-		}
-		return uploadPath; // 2023\07\18\
-	}
-	
-	
-	
-	public static void main(String[] args) {
-		LocalDate currentDate = LocalDate.now();
-		System.out.println("currentDate : " + currentDate);   // 2023-07-18
-		
-		String uploadPath = currentDate.toString().replace("-", File.separator) + File.separator;
-		System.out.println("경로 : " + uploadPath);  // 2023\07\18
-	}
 }

@@ -28,7 +28,7 @@
 	  <constructor-arg ref="hikariConfig"></constructor-arg>
 </bean>
 
-<!-- 인코딩 -> @@Autowired 가능 -->
+<!-- 인코딩 -> @Autowired 가능 -->
 <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
 
 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -52,10 +52,10 @@
 
 
 <!-- 트랜잭션 처리 -->
- <bean id="transactionManager"
+<bean id="transactionManager"
     class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
     <property name="dataSource" ref="dataSource"></property>
-  </bean>
+</bean>
  
   <tx:annotation-driven />
 

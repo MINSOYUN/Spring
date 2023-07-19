@@ -232,7 +232,7 @@
 	      <version>${org.aspectj-version}</version>
 	    </dependency>
 		
-	<!-- 썸네일 생성 -->
+		<!-- 썸네일 생성 -->
 		<dependency>
 	      <groupId>net.coobird</groupId>
 	      <artifactId>thumbnailator</artifactId>

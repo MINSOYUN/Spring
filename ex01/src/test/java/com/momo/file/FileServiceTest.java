@@ -42,5 +42,12 @@ public class FileServiceTest {
 		log.info("res" + res); 
 		log.info("vo" + vo); 
 	}
+	
+	@Test
+	public void delete() {
+		int res = service.delete("3ad6d1e9-8362-41db-8aff-a74fc683d043", 83);
+		log.info("===========");
+		log.info("res : " + res);
+	}
 
 }

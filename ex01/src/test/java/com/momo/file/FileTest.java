@@ -42,4 +42,11 @@ public class FileTest {
 		log.info("res" + res); 
 		log.info("vo" + vo); 
 	}
+	
+	@Test
+	public void delete() {
+		int res = mapper.delete("0840ec34-99ec-4a20-a2f0-dba531748794", 83);
+		log.info("=======");
+		log.info("res : " + res);
+	}
 }

@@ -5,12 +5,16 @@
 <head>
 <meta charset="UTF-8">
 <title>파일 업로드</title>
+
+<script src="https://kit.fontawesome.com/a79d7cf7c1.js" crossorigin="anonymous"></script>
+
 <script type="text/javascript">
 window.addEventListener('load', function(){
 	// 리스트 조회
 	btnList.addEventListener('click', function(){
 		getFileList();
 	});
+	
 	
 	// 파일업로드
 	btnFileupload.addEventListener('click', function(){
@@ -21,7 +25,7 @@ window.addEventListener('load', function(){
 		
 		console.log("formData : " , formData);
 		//FormData 값 확인
-		for(var pair of formD ata.entries()){
+		for(var pair of formData.entries()){
 				console.log("pair : " , pair);
 				console.log(pair[0] +':'+pair[1]);
 				
@@ -69,13 +73,18 @@ window.addEventListener('load', function(){
 		}
 	}
 	
+	
 	// fetch로 값을 받아오기 때문에 map을 받을 함수 필요
 	// 따라서 msg 를 저장할 <div> 필요
 	function fileuploadRes(map){
 		if(map.result == 'success'){
 			divFileuploadRes.innerHTML = map.msg;
+			// 게시글 등록
+		} else{
+			alert(map.msg);
 		}
 	}
+	
 	
 	function getFileList(){
 		// /file/list/bno
@@ -85,17 +94,54 @@ window.addEventListener('load', function(){
 		.then(map => viewFileList(map))
 	}
 	
+	
 	function viewFileList(map){
 		console.log(map);
 		let content='';
+		
 		if(map.list.length > 0){
-			map.list.forEach(function(item, index){
-				content += item.filename + '<br>';
+			map.list.forEach(function(item, index){ 
+				
+				// 
+				let savePath = encodeURIComponent(item.savePath);  // uri 인코딩
+				console.log("savePath : ", savePath);
+				// controller 와 같게 href 작성
+				content += '<a href="/file/download?fileName=' + savePath + '">'
+				+ item.filename + '</a>'
+				// item 에서부터 bno와 uuid
+				+ '<i onclick = "attachFileDelete(this)" data-bno = "' + item.bno + '" data-uuid= "' + item.uuid + '"'
+				+ ' class="fa-regular fa-square-minus"></i>'
+				+ '<br>';
 			})
+			
 		} else{
 			content = "등록된 파일이 없습니다"
 		}
+		
 		divFileupload.innerHTML = content;
+	}
+	
+	
+	function attachFileDelete(e){
+		console.log(e.dataset.bno, e.dataset.uuid);
+		let bno = e.dataset.bno;
+		let uuid = e.dataset.uuid;
+		
+		// 값이 유효하지 않는 경우 메세지 처리
+		fetch('/file/delete/'+uuid+'/'+bno)
+		.then(response => response.json()) 
+		.then(map => deleteList(map))
+	}
+	
+	
+
+	function deleteList(map){
+		if(map.result == 'success'){
+			divFiledeleteRes.innerHTML = map.msg;
+			getFileList();
+		} else{
+			alert(map.msg);
+		}
 	}
 </script>
 </head>
@@ -112,14 +158,14 @@ window.addEventListener('load', function(){
 		<button type="submit">파일 업로드</button> <br> <br>
 		<button type="button" id="btnFileupload">Fetch 파일업로드</button> <br> <br>
 	</form>
-	결과:${param.msg} <br> <br>
 	<div id="divFileuploadRes"> </div>
 	
 	<hr>
 	<p></p>
 	
 	<h4>파일 리스트 조회</h4>
-	<button type="button" id="btnList">파일 조회</button><br>
+	<button type="button" id="btnList">파일 조회</button><p></p>
+	<div id="divFiledeleteRes" style="font-style:italic"> </div>
 	<p></p>
 	<div id="divFileupload"></div>
 

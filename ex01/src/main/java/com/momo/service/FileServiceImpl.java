@@ -23,5 +23,9 @@ public class FileServiceImpl implements FileService {
 	public int insert(FileVO vo) {
 		return mapper.insert(vo);
 	}
-
+	
+	@Override
+	public int delete(String uuid, int bno) {
+		return mapper.delete(uuid, bno);
+	}
 }

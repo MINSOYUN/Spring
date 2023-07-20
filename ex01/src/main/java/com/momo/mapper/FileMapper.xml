@@ -15,4 +15,8 @@
 	<insert id="insert">
 		insert into tbl_attach values(#{uuid}, #{uploadpath}, #{filename}, #{filetype}, #{bno})
 	</insert>
+	
+	<delete id="delete">
+		delete from tbl_attach where uuid= #{uuid} and bno = #{bno}
+	</delete>
 </mapper>

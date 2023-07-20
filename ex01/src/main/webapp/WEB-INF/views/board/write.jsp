@@ -62,6 +62,11 @@
 						  <label for="writer" class="form-label">board writer</label>
 						  <input type="text" id="writer" class="form-control" name="writer" value="${board.writer }" placeholder="작성자를 입력하세요" >
 						</div>
+						<!-- 파일 -->
+						<div class="mb-3">
+						  <label for="file" class="form-label">file</label>
+						  <input type="file" id="file" class="form-control" name="file" >
+						</div>
 						
 						<div class="d-grid gap-2 d-md-flex justify-content-md-center">
 						<!-- bno가 비어있지 않으면 수정하기 버튼 출력 -->

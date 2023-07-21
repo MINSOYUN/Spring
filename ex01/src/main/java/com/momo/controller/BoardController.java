@@ -12,6 +12,7 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.momo.service.BoardService;
@@ -107,26 +108,41 @@ public class BoardController {
 	 * addFlashAttribute : 세션에 저장 후 페이지 이동
 	 */
 	@PostMapping("write")
-	public String writeAction(BoardVO board, Model model, RedirectAttributes rttr) {
+	public String writeAction(BoardVO board, List<MultipartFile> files, Model model, RedirectAttributes rttr) {
 		log.info(board);
 		
-		String msg = "";
 		
-		// 시퀀스 조회 후 시퀀스 번호를 bno에 저장
-		int res = boardService.insertSelectkey(board); 
-		log.info("==========================");
-		log.info("res : " + res);
+		int res;
 		
-		if(res > 0) {
-			msg = "Post" + board.getBno() + "has been registered";
-			//rttr.addAttribute("msg", msg);   // url?msg=등록 -> 쿼리스트링으로 전달 ${param.msg}
-			rttr.addFlashAttribute("msg", msg);  // 세션영역에 저장 -> 새로 고침시 유지되지 않음  ${msg}
-			return "redirect:/board/list";  // request 영역 공유 x -> 데이터 유지x
-		} else {
-			msg = "An exception occurred during registration";
-			model.addAttribute("msg", msg);
-			return "/board/message"; // redirect: 안쓰면 리스트 조회x
-		}
+		try {
+			// 시퀀스 조회 후 시퀀스 번호를 bno에 저장
+			// 게시물 등록 + 파일 첨부
+			String msg = "";
+			res = boardService.insertSelectkey(board, files);
+			
+			if(res > 0) {
+				msg = "Post" + board.getBno() + " has been registered";
+				//rttr.addAttribute("msg", msg);   // url?msg=등록 -> 쿼리스트링으로 전달 ${param.msg}
+				rttr.addFlashAttribute("msg", msg);  // 세션영역에 저장 -> 새로 고침시 유지되지 않음  ${msg}
+				return "redirect:/board/list";  // request 영역 공유 x -> 데이터 유지x
+			} else {
+				msg = "An exception occurred during registration";
+				model.addAttribute("msg", msg);
+				return "/board/message"; // redirect: 안쓰면 리스트 조회x
+			}
+			
+		} catch (Exception e) {
+			log.info(e.getMessage());
+			
+			// 첨부파일 글씨가 있으면 오류 -> msg
+			if(e.getMessage().indexOf("첨부파일")>-1) {
+				model.addAttribute("msg", e.getMessage());
+			} else {
+				model.addAttribute("msg", "등록중 예외사항이 발생 하였습니다");
+			}
+			return "board/message";
+		} 
+		
 	}
 	
 	
@@ -141,31 +157,45 @@ public class BoardController {
 	
 	// 게시글 업데이트
 	@PostMapping("editAction")
-	public String editAction(BoardVO board, Criteria cri, Model model, RedirectAttributes rttr) {
+	public String editAction(BoardVO board, Criteria cri, List<MultipartFile> files, Model model, RedirectAttributes rttr) {
 		// ?pageNo=1   -> request.getParam("pageNo");  받기
 		// request.setAttr("") request 내장 객체에 저장
 		// request.setAttr("") ${param.pageNo}
 		// request.getAttr("") / session.setAttr("") -> ${pageNo} 내장객체에 저장하면 ${}꺼내옴
-		int res = boardService.update(board);
+		int res;
 		
-		String msg = "";
-		log.info("==========================");
-		log.info("board : "+ board);
-		
-		if(res > 0) {
-			// redirect 시 request 영역이 공유 되지 않으므로 RedirectAttributes 를 이용
-			msg = "Post" + board.getBno() + "has been modified";
-			rttr.addFlashAttribute("msg", msg); 
-			rttr.addAttribute("pageNo",cri.getPageNo());   // attribute 는 parameter로 넘겨준다
-			rttr.addAttribute("pageNo",cri.getSearchField());   
-			rttr.addAttribute("pageNo",cri.getSearchWord());   
+		try {
 			
-			return "redirect:/board/view?bno=" + board.getBno();
-		} else {
-			msg = "Exception while modifying post";
-			model.addAttribute("msg", msg);
-			return "/board/message";
+			res = boardService.update(board, files);
+			String msg = "";
+			log.info("==========================");
+			log.info("board : "+ board);
+			
+			if(res > 0) {
+				// redirect 시 request 영역이 공유 되지 않으므로 RedirectAttributes 를 이용
+				msg = "Post" + board.getBno() + "has been modified";
+				rttr.addFlashAttribute("msg", msg); 
+				rttr.addAttribute("pageNo",cri.getPageNo());   // attribute 는 parameter로 넘겨준다
+				rttr.addAttribute("pageNo",cri.getSearchField());   
+				rttr.addAttribute("pageNo",cri.getSearchWord());   
+				
+				return "redirect:/board/view?bno=" + board.getBno();
+			} else {
+				msg = "Exception while modifying post";
+				model.addAttribute("msg", "수정 중 예외사항이 발생하였습니다");
+				return "/board/message";
+			}
+			
+		} catch (Exception e) {
+			if(e.getMessage().indexOf("첨부파일")>-1) {
+				model.addAttribute("msg", "수정 중 예외사항이 발생하였습니다");
+				e.printStackTrace();
+			} else {
+				
+			}
 		}
+		return null;
+		
 	}
 	
 	

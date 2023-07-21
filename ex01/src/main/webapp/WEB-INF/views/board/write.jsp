@@ -24,16 +24,52 @@
 		writeFrm.action = url;
 		writeFrm.submit();
 		
+	};
+	
+	
+	function getFileList(){
+	// /file/list/bno
+	let bno = '${board.bno}';
+
+	if(bno){
+		fetch('/file/list/'+bno)
+		.then(response => response.json()) // Object 형식으로 반환
+		.then(map => viewFileList(map))
+	}
+}
+	
+	
+function viewFileList(map){
+	console.log(map);
+	let content='';
+	
+	if(map.list.length > 0){
+		
+		content +=  '<div class="mb-3">                                 '
+		+ '  <label for="attachFile" class="form-label">file</label>  '
+		+ '  <div class="form-control" id="attachFile">               ';
+		
+		map.list.forEach(function(item, index){ 
+			
+			let savePath = encodeURIComponent(item.savePath);  // uri 인코딩
+			console.log("savePath : ", savePath);
+			// controller 와 같게 href 작성
+			content += '<a href="/file/download?fileName=' + savePath + '">'
+			+ item.filename + '</a>'
+			// item 에서부터 bno와 uuid
+			+ '<i onclick = "attachFileDelete(this)" data-bno = "' + item.bno + '" data-uuid= "' + item.uuid + '"'
+			+ ' class="fa-regular fa-square-minus"></i>'
+			+ '<br>';
+		})
+		content += '  </div>         '
+					+ '</div>			';
+		
+	} else{
+		content = "등록된 파일이 없습니다"
 	}
 	
-	// 왜 다 로드되고 실행
-	window.addEventListener('load', function(){
-		btnList.addEventListener('click', function(){
-			viewFrm.action="/board/list";
-			viewFrm.method="get";
-			viewFrm.submit();
-		});
-	})
+	divFileupload.innerHTML = content;
+}
 </script>
 </head>
 <body>
@@ -49,7 +85,7 @@
   </div>
 <p></p> <p></p>
 		  <div class="list-group w-auto">
-				<form name="writeFrm" method="post" action="/board/write">
+				<form name="writeFrm" method="post" action="/board/write" enctype="multipart/form-data">
 						 <div class="mb-3">
 						  <label for="title" class="form-label">board title</label>
 						  <input name="title" id="title" type="text" class="form-control" value="${board.title }" placeholder="게시글의 제목을 입력하세요" >
@@ -62,10 +98,18 @@
 						  <label for="writer" class="form-label">board writer</label>
 						  <input type="text" id="writer" class="form-control" name="writer" value="${board.writer }" placeholder="작성자를 입력하세요" >
 						</div>
+						<!-- 작성화면일 때 -->
+						<c:if test="${empty board.writer} ">
+							<input type="text" class=""form-control" id="writer" name="writer" readonly value="${userId }">
+						</c:if>
+						<!-- 수정화면일 때 -->
+						<c:if test="${not empty board.writer} ">
+							<input type="text" class=""form-control" id="writer" name="writer" readonly value="${board.writer }">
+						</c:if>
 						<!-- 파일 -->
 						<div class="mb-3">
 						  <label for="file" class="form-label">file</label>
-						  <input type="file" id="file" class="form-control" name="file" >
+						  <input type="file" id="file" class="form-control" name="files" multiple="multiple">
 						</div>
 						
 						<div class="d-grid gap-2 d-md-flex justify-content-md-center">

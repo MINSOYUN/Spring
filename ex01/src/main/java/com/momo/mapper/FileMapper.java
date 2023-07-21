@@ -18,6 +18,8 @@ public interface FileMapper {
 	public int insert(FileVO vo);
 	
 	public int delete(@Param("uuid") String uuid, @Param("bno") int bno);
+	
+	public FileVO getOne(@Param("uuid") String uuid, @Param("bno") int bno);
 
 
 }

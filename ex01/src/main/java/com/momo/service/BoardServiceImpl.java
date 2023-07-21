@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.momo.mapper.BoardMapper;
 import com.momo.vo.BoardVO;
@@ -35,6 +37,9 @@ public class BoardServiceImpl implements BoardService{
 	@Autowired
 	private BoardMapper boardMapper;
 	
+	@Autowired
+	private FileService fileservice;
+	
 	
 	@Override
 	public List<BoardVO> getListXml(Criteria cri, Model model) {
@@ -60,8 +65,14 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int insertSelectkey(BoardVO board) {
+	@Transactional(rollbackFor = Exception.class)
+	public int insertSelectkey(BoardVO board, List<MultipartFile> files) throws Exception {
+		// 게시물 등록
 		int res = boardMapper.insertSelectkey(board);
+		
+		// 파일 첨부
+		fileservice.fileupload(files, board.getBno());
+		
 		return res;
 	}
 
@@ -73,14 +84,20 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public int delete(String bno) {
+		// 게시물  삭제 시 첨부된 파일이 있는 경우 오류가 발생
+		// 첨부 파일 리스트 조회 - fileuploadService
+		// 리스트를 돌면서 삭제 처리하며 모든 파일 삭제 - fileService
 		int res = boardMapper.delete(bno);
-		System.out.println("서비스res: " + res);
 		return res;
 	}
 
 	@Override
-	public int update(BoardVO board) {
+	public int update(BoardVO board, List<MultipartFile> files) throws Exception {
+		// 게시물 등록
 		int res = boardMapper.update(board);
+		
+		// 파일 처리
+		fileservice.fileupload(files, board.getBno());
 		return res;
 	}
 

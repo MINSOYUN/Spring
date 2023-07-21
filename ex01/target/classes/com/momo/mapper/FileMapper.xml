@@ -7,7 +7,7 @@
 	<select id="getList" resultType="com.momo.vo.FileVO">
 		select t.*, 
 	    	uploadpath||uuid||'_'||filename savePath, 
-	   		's_'||uploadpath||uuid||'_'||filename s_savePath
+	   		decode(filetype, 'I', uploadpath||'s_'||uuid||'_'||filename)s_savePath
 		from tbl_attach t
 		where bno = #{bno}
 	</select>
@@ -19,4 +19,12 @@
 	<delete id="delete">
 		delete from tbl_attach where uuid= #{uuid} and bno = #{bno}
 	</delete>
+	
+	<select id="getOne" resultType="com.momo.vo.FileVO">
+		select t.*, 
+	    	uploadpath||uuid||'_'||filename savePath, 
+	   		decode(filetype, 'I', uploadpath||'s_'||uuid||'_'||filename)s_savePath
+		from tbl_attach t
+		where bno = #{bno} and uuid = #{uuid}
+	</select>
 </mapper>

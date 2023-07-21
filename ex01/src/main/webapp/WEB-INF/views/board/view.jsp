@@ -23,13 +23,17 @@
 
 
 <script type="text/javascript">
-
+	
+	// 로그인한 아이디와 게시글의 작성자가 일치하면 수정, 삭제 버튼에 이벤트 적용
 	window.onload=function(){
+		if(${userId eq board.writer}){
+			
 		// id 값.
 		btnEdit.addEventListener('click', function(){
 			viewFrm.action = '/board/edit';
 			viewFrm.submit();
 		});
+		
 		
 		btnDelete.addEventListener('click', function(){
 			viewFrm.action = '/board/delete';   // bno의 값 viewFrm이 가지고 있어 따로 명시할 필요 x
@@ -40,6 +44,9 @@
 			viewFrm.action = '/board/list';
 			viewFrm.submit();
 		});
+	
+		}
+		
 		
 		// 댓글 목록 조회 및 출력
 		getReplyList();
@@ -49,8 +56,48 @@
 			replyWrite();
 		});
 		
+		getFileList();
 	};
 
+	
+function getFileList(){
+	// /file/list/bno
+	let bno = document.querySelector("#bno").value;
+	fetch('/file/list/'+bno)
+	.then(response => response.json()) // Object 형식으로 반환
+	.then(map => viewFileList(map))
+}
+
+
+function viewFileList(map){
+	console.log(map);
+	let content='';
+	
+	if(map.list.length > 0){
+		
+		content +=  '<div class="mb-3">                                 '
+		+ '  <label for="attachFile" class="form-label">file</label>  '
+		+ '  <div class="form-control" id="attachFile">               ';
+		
+		map.list.forEach(function(item, index){ 
+			
+			let savePath = encodeURIComponent(item.savePath);  // uri 인코딩
+			console.log("savePath : ", savePath);
+			// controller 와 같게 href 작성
+			content += '<a href="/file/download?fileName=' + savePath + '">'
+			+ item.filename + '</a>'
+			// item 에서부터 bno와 uuid
+			+ '<br>';
+		})
+		content += '  </div>         '
+					+ '</div>			';
+		
+	} else{
+		content = "등록된 파일이 없습니다"
+	}
+	
+	divFileupload.innerHTML = content;
+}
 
 </script>
 
@@ -74,7 +121,7 @@
 		<input type="hidden" name="pageNo" value="${param.pageNo }">
 		<input type="hidden" name="searchField" value="${param.searchField }">
 		<input type="hidden" name="searchWord" value="${param.searchWord }">
-		<input type="hidden" name="bno" id="bno" value="${board.bno }" readonly>
+		<input type="text" name="bno" id="bno" value="${board.bno }" readonly>
 		
 		  		<div class="mb-3">
 		  			<!-- label for와 input name 같게
@@ -90,15 +137,24 @@
 					  <label for="writer" class="form-label">board writer</label>
 					  <input type="text" id="writer" class="form-control" name="writer" value="${board.writer }" readonly>
 					</div>
+					
+					<!-- 첨부 파일 -->
+					<div id="divFileupload">
+					</div>
+				
+				<!-- 로그인 한 사용자의 아이디와 게시글의 작성자가 아니면 버튼 숨김 -->
+				<c:if test="${userId eq board.writer}">
 				<div class="d-grid gap-2 d-md-flex justify-content-md-center">
 						<button type="button" id="btnEdit" class="btn btn-outline-success btn-sm">Update</button>
 						<button type="button" id="btnDelete" class="btn btn-outline-secondary btn-sm">Delete</button>
 						<button type="button" id="btnList" class="btn btn-outline-primary btn-sm" >ViewList</button>
 				</div>	
+				</c:if>
 		</form>
 	</div>
 	<p></p>
-	<input type="hidden" id="replyer" value="작성자">
+	<!-- 요소가 가지고 있는 밸류 속성으로 판단해라 -->
+	<input type="hidden" id="replyer" value="${userId }">
 	<input type="hidden" id="page" value="1">
 	<p></p>
   <div class="input-group">

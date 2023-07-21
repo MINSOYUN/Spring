@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.momo.vo.BoardVO;
 import com.momo.vo.Criteria;
@@ -17,7 +18,7 @@ import com.momo.vo.Criteria;
 		public int insert(BoardVO board);
 		
 		// 시퀀스 포함한 삽입
-		public int insertSelectkey(BoardVO board);
+		public int insertSelectkey(BoardVO board, List<MultipartFile> files) throws Exception;
 		
 		// 하나 조회
 		public BoardVO getOne(int bno);
@@ -26,7 +27,7 @@ import com.momo.vo.Criteria;
 		public int delete(String bno);
 		
 		// 업데이트
-		public int update(BoardVO board);
+		public int update(BoardVO board, List<MultipartFile> files) throws Exception;
 		
 		// 총 건수
 		public int getTotalCnt(Criteria cri);

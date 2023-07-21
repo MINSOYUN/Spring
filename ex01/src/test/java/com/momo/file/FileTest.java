@@ -49,4 +49,11 @@ public class FileTest {
 		log.info("=======");
 		log.info("res : " + res);
 	}
+	
+	@Test
+	public void getOne() {
+		FileVO vo = mapper.getOne("a8d8a662-edd8-408b-9a92-42d28acb540c", 83);
+		log.info("=======");
+		log.info("vo : " + vo);
+	}
 }

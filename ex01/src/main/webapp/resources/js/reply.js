@@ -96,15 +96,20 @@ console.log('========')
 						// data-value -> 입력된 내용을 확인 하기 위해서 dataset.value로 값을 꺼내옴
 					'    <tr id="tr'+reply.rno+'" data-value="'+reply.reply+'" >'  // ex) tr1, tr2                          '
 					+'      <th scope="row">'+reply.rno+'</th>      '  // 댓글 번호
-					+'      <td class="text-start">'+reply.reply+''  // 댓글 내용
-					+			'<i class="fa-solid fa-pen-to-square" onclick="replyEdit('+reply.rno+')"></i>'  // 수정
+					+'      <td class="text-start">'+reply.reply+'';  // 댓글 내용
+					
+					// replayer.vlaje : 로그안한 아이디
+					// replayDivSTr = 
+					if(replyer.value == reply.replyer){
+						replyDivStr +=
+					+	'<i class="fa-solid fa-pen-to-square" onclick="replyEdit('+reply.rno+')"></i>'  // 수정
 					+			'<i class="fa-regular fa-square-minus" onclick="replyDelete('+reply.rno+')"></i>'  // 삭제
 					+'		</td>               '
 					+'      <td>'+reply.replyer   // 댓글 작성자 + 작성일
 					+' 		<br>'+reply.replydate+'</td>   '
 					+'    </tr>   ';
 					
-				});
+				}
 				
 				replyDivStr +=
 				'  </tbody>   '
@@ -150,8 +155,9 @@ console.log('========')
 				+ `</nav>`  ;
 				
 				replyDiv.innerHTML += pageBlock;     // replyDivStr 이미 넣었으므로 +=
-		}
+		});
 		
+	}
 	}
 	
 	

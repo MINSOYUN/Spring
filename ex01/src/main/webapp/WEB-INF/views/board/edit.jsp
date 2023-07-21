@@ -17,10 +17,55 @@
 </style>
 
 <script type="text/javascript">
+	window.onload=function(){
+		getFileList();
+	}
 	function requestAction(url){
 		writeFrm.action = url;
 		writeFrm.submit();
 		
+	}
+	
+	function getFileList(){
+		// /file/list/bno
+		let bno = '${board.bno}';
+		fetch('/file/list/'+bno)
+		.then(response => response.json()) // Object 형식으로 반환
+		.then(map => viewFileList(map))
+	}
+
+
+	function viewFileList(map){
+		console.log(map);
+		let content='';
+		
+		if(map.list.length > 0){
+			
+			content +=  '<div class="mb-3">                                 '
+			+ '  <label for="attachFile" class="form-label">file</label>  '
+			+ '  <div class="form-control" id="attachFile">               ';
+			
+			map.list.forEach(function(item, index){ 
+				
+				let savePath = encodeURIComponent(item.savePath);  // uri 인코딩
+				console.log("savePath : ", savePath);
+				// controller 와 같게 href 작성
+				content += '<a href="/file/download?fileName=' + savePath + '">'
+				+ item.filename + '</a>'
+				// item 에서부터 bno와 uuid
+				+ '<i onclick = "attachFileDelete(this)" data-bno = "' + item.bno + '" data-uuid= "' + item.uuid + '"'
+				+ ' class="fa-regular fa-square-minus"></i>'
+				+ '<br>';
+			})
+			
+			content += '  </div>         '
+						+ '</div>			';
+			
+		} else{
+			content = "등록된 파일이 없습니다"
+		}
+		
+		divFileupload.innerHTML = content;
 	}
 
 </script>
@@ -42,10 +87,17 @@ ${param.searchFiled }
   </div>
 <p></p> <p></p>
 	<div class="list-group w-auto">
-		<form name="writeFrm" method="post" action="/board/editAction">
+		<form name="writeFrm" method="post" action="/board/editAction" enctype="multipart/form-data">
 				<!-- 페이지, 검색 유지 -> form 안에 작성해주어야 post 되면서 넘어간다
 				form 에선 name 값으로 ! 넘어간다! -->
-				<input type="hidden" name="pageNo" value="${param.pageNo }">
+				<c:if test=" ${not empty param.pageNo }">
+					<input type="text" name="pageNo" value="${param.pageNo}">
+				</c:if>
+				<c:if test=" ${empty param.pageNo }">
+					<input type="text" name="pageNo" value="1">
+				</c:if>
+				
+				<input type="hidden" name="pageNo" value="${param.pageNo ==''?'1':param.pageNo }">
 				<input type="hidden" name="searchField" value="${param.searchField }">
 				<input type="hidden" name="searchWord" value="${param.searchWord }">
 				<input type="hidden" name="bno" value="${board.bno }" readonly>
@@ -60,6 +112,11 @@ ${param.searchFiled }
 					<div class="mb-3">
 					  <label for="writer" class="form-label">board title<span class="required-label">*</span></label>
 					  <input type="text" id="writer" class="form-control" name="writer" value="${board.writer }">
+					</div>
+					<!-- 파일 -->
+					<div class="mb-3">
+						  <label for="file" class="form-label">file</label>
+						  <input type="file" id="file" class="form-control" name="files" multiple="multiple">
 					</div>
 				<div class="d-grid gap-2 d-md-flex justify-content-md-center">
 						<button type="button" id="btnEdit" class="btn btn-outline-success btn-sm" onclick="requestAction('/board/editAction')">Completed</button>

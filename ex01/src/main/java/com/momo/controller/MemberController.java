@@ -2,6 +2,7 @@ package com.momo.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,16 @@ public class MemberController extends CommonRestController{  // map(res,msg) ext
 	@Autowired
 	MemberService service;
 	
+	@GetMapping("/login/naver")
+	public void naverLogin() {
+		
+	}
+	
+	@GetMapping("/login/naver_callback")
+	public String naver_callback(HttpServletRequest request, Model model) {
+		service.naverLogin(request, model);
+		return "/login/naver";
+	}
 	
 	/**
 	 * 로그인 페이지로 이동
